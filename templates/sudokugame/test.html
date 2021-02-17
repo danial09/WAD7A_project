@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/board-style.css' %}" />
+    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'sudokugame/board.js' %}"></script>
+</head>
+<body>
+<h1 style="text-align: center">Sudoku!</h1>
+
+<div id="sudoku_container">
+    <div id="sudoku_board">
+        {% for cell in board %}
+            {% if cell == '0' %}
+                <div class="cell" contenteditable="true"> </div>
+            {% else %}
+                <div class="cell fixedCell" contenteditable="true">{{ cell }}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+</body>
+</html>

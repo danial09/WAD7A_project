@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+{% load sudoku_template_tags %}
+
+<html lang= "en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title_block %}
+            Sudoku Online
+        {% endblock %}    
+    </title>
+</head>
+
+<body>
+    <div class="navigationBar">
+        <ul >
+            <li>
+                <a href="{% url 'sudoku:home' %}"> Sudoku Online</a>
+            </li>
+            <!-- We need  a drop down thingy here -->
+            <li id="dropdown"> 
+                <div class="dropdown-content">
+                    
+                    <a href="{% url 'sudoku:leaderboard'%}"> Leaderboard </a>
+                    <!-- Only available when not logged in-->
+                    
+                    {% if user.is_authenticated %}
+                    <!-- Only available when logged in-->
+                    <a href="{% url 'sudoku:profile'%}"> Profile </a>
+                    <a href="{% url 'sudoku:dailychallenge'%}"> Daily Challenge</a>
+                    {% else %}
+                    <a href="{% url 'sudoku:login'%}"> Login </a>
+                    <a href="{% url 'sudoku:signup'%}"> Sign Up </a>
+                    {% endif %}
+
+                    <a href="{% url 'sudoku:practice'%}"> Practice </a>
+                    <!-- Static page with text-->
+                    <a href="{% url 'sudoku:help'%}"> Help </a>
+                    
+                </div>
+            </li>
+
+        </ul>
+        
+
+    </div>
+    <div>
+        {% block body_block %}
+        {% endblock %}
+    </div>
+
+    <div>
+        {% block side_block %}
+        {% endblock %}
+    </div>
+
+</body>
+

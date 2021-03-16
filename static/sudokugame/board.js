@@ -1,24 +1,36 @@
 $(document).ready(function (){
-    $(".cell").on("keydown", cellKeyDown);
-    $('.cell').focus(onCellFocus)
+    $(".cell")
+        .on("keydown", cellKeyDown)
+        .focus(onCellFocus);
 });
 
 function cellKeyDown(event) {
-    event.preventDefault()
-
-    if (!isNaN(parseInt(event.key)) && event.key !== "0" && canEdit(this)) {
-        $(this).html(event.key)
-        highlightRelatedNum(event.key)
-    }
-    else if ((event.key === 'Delete' || event.key === 'Backspace') && !$(this).hasClass("fixedCell")) {
-        highlightRelatedNum("")
-        $(this).empty();
-    }
+    // First, handle if one of the arrow keys were pressed
     if (event.key.startsWith("Arrow")) {
         event.preventDefault();
-        keyChangeCell(this, event.key)
-
+        keyChangeCell(this, event.key);
+        return;
     }
+    // Now, let's handle emptying the cell
+    if ((event.key === 'Delete' || event.key === 'Backspace' || event.key === '0') && !$(this).hasClass("fixedCell")) {
+        event.preventDefault();
+        highlightRelatedNum("");
+        $(this).empty();
+        return;
+    }
+
+    // Finally, let's handle adding a number between 1-9 to the cell
+    // Check that the user has inputted a printable character, return if this is not the case.
+    if (event.key.length !== 1 && event.key !== "Enter") {
+        return;
+    }
+
+    event.preventDefault();
+    if (!isNaN(parseInt(event.key)) && canEdit(this)) {
+        $(this).html(event.key);
+        highlightRelatedNum(event.key);
+    }
+
 }
 
 function highlightRelatedNum(num) {
@@ -29,9 +41,10 @@ function highlightRelatedNum(num) {
 }
 
 function onCellFocus() {
-    $("#focusedCell").removeAttr("id");
+    cleanUpHighlighting();
+
     if(canEdit(this)) {
-        $(this).attr("id", "focusedCell")
+        $(this).attr("id", "focusedCell");
     }
 
     const index = $(this).index();
@@ -40,14 +53,12 @@ function onCellFocus() {
     const cells = $(this).parent().children();
 
     // Highlight cells on same column
-    $(".relatedColCell").removeClass("relatedColCell");
     for (let i = index % 9; i < 81; i += 9) {
         if (i === index) continue;
         $(cells[i]).addClass("relatedColCell");
     }
 
     // Highlight cells on same row
-    $(".relatedRowCell").removeClass("relatedRowCell");
     for (let i = 0; i < 9; i++) {
         const offset = 9 * Math.floor(index / 9);
         if (offset + i === index) continue;
@@ -55,16 +66,15 @@ function onCellFocus() {
     }
 
     // Highlight same num
-    highlightRelatedNum($(this).text())
+    highlightRelatedNum($(this).text());
 
 
-    // Highlight sub-grid
-    $(".relatedGridCell").removeClass("relatedGridCell");
+    // Now, we highlight the sub-grid
     // Find starting cell of the sub-grid row
     let startingRowCell;
     if (index < 26)         startingRowCell = 0;
     else if (index < 53)    startingRowCell = 27;
-    else                    startingRowCell = 54
+    else                    startingRowCell = 54;
 
     // Find horizontal offset of the starting cell of this sub-grid
     let horizontalOffset;
@@ -80,7 +90,7 @@ function onCellFocus() {
         for (let j = 0; j < 3; ++j) {
             const cell = $(cells[(startingCell + i) + 9 * j]);
             if (canEdit(cell))
-                $(cell).addClass("relatedGridCell")
+                $(cell).addClass("relatedGridCell");
         }
     }
 }
@@ -93,7 +103,7 @@ function keyChangeCell(cell, key) {
     switch (key) {
         case "ArrowLeft":
             newPosition = (curPosition - 1);
-            if (newPosition % 9 === 8 || newPosition === -1) newPosition +=9
+            if (newPosition % 9 === 8 || newPosition === -1) newPosition +=9;
             break;
 
         case "ArrowRight":
@@ -112,11 +122,15 @@ function keyChangeCell(cell, key) {
 
     if (newPosition != null) {
         const newCell = $(cell).parent().children("div")[newPosition];
-        setTimeout(function() {
-            $(newCell).focus()
-        }, 0
-        )
+        $(newCell).focus();
     }
+}
+
+function cleanUpHighlighting() {
+    $("#focusedCell").removeAttr("id");
+
+    const highlightClasses = ["relatedNumCell", "relatedGridCell", "relatedRowCell", "relatedColCell"];
+    highlightClasses.forEach(c => $("."+c).removeClass(c));
 }
 
 function canEdit(cell) {

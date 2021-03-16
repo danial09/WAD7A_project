@@ -129,10 +129,10 @@ function keyChangeCell(cell, key) {
 }
 
 function cleanUpHighlighting() {
-    $("#focusedCell").removeAttr("id")
+    $("#focusedCell").removeAttr("id");
 
     const highlightClasses = ["relatedNumCell", "relatedGridCell", "relatedRowCell", "relatedColCell"];
-    highlightClasses.forEach(c => $("."+c).removeClass(c))
+    highlightClasses.forEach(c => $("."+c).removeClass(c));
 }
 
 function canEdit(cell) {

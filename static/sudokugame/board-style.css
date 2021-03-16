@@ -4,9 +4,10 @@ body {
 
 #sudoku_board {
     box-shadow: 0 0 5px 5px black;
-    width:35%;
+    width: calc(4em * 9);
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-columns: repeat(9, 4em);
+    grid-template-rows: repeat(9, 4em);
     margin: auto;
 }
 

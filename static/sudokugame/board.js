@@ -12,7 +12,7 @@ function cellKeyDown(event) {
         return;
     }
     // Now, let's handle emptying the cell
-    if ((event.key === 'Delete' || event.key === 'Backspace') && !$(this).hasClass("fixedCell")) {
+    if ((event.key === 'Delete' || event.key === 'Backspace' || event.key === '0') && !$(this).hasClass("fixedCell")) {
         event.preventDefault();
         highlightRelatedNum("");
         $(this).empty();
@@ -20,15 +20,13 @@ function cellKeyDown(event) {
     }
 
     // Finally, let's handle adding a number between 1-9 to the cell
-
     // Check that the user has inputted a printable character, return if this is not the case.
-    if (event.key.length !== 1) {
+    if (event.key.length !== 1 && event.key !== "Enter") {
         return;
     }
 
     event.preventDefault();
-
-    if (!isNaN(parseInt(event.key)) && event.key !== "0" && canEdit(this)) {
+    if (!isNaN(parseInt(event.key)) && canEdit(this)) {
         $(this).html(event.key);
         highlightRelatedNum(event.key);
     }

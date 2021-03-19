@@ -17,7 +17,7 @@
     <div id="sudoku_board">
         {% for cell in board %}
             {% if cell == '0' %}
-                <div class="cell" contenteditable="true"> </div>
+                <div class="cell" contenteditable="true"></div>
             {% else %}
                 <div class="cell fixedCell" contenteditable="true">{{ cell }}</div>
             {% endif %}

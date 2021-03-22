@@ -4,5 +4,6 @@ from sudokugame import views
 app_name = "sudokugame"
 
 urlpatterns = [
-    path('', views.test, name='test')
+    path('', views.test, name='test'),
+    path('register/', views.register, name = 'register'),
 ]

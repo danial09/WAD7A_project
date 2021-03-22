@@ -1,0 +1,21 @@
+{% extends 'sudokugame/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Register
+{% endblock %}
+{% block body_block %}
+    <h1>Register to Online Sudoku</h1>
+    {% if registered %}
+        <strong>Thank you for registering!</strong>
+        <a href="{% url 'sudokugame:test' %}">Return to the homepage.</a><br />
+    {% else %}
+         <strong>Register here!</strong>
+        <form id="user_form" method="post" action="{% url 'sudokugame:register' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <!-- Provide a button to click to submit the whole form. -->
+        <input type="submit" name="submit" value="Register" />
+        </form>
+    {% endif %}
+{% endblock %}

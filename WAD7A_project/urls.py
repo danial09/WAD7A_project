@@ -18,8 +18,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from sudokugame import views
+from django.urls import include
 
 urlpatterns = [
     path('', views.test, name='test'),
     path('admin/', admin.site.urls),
+    path('sudokugame/', include('sudokugame.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

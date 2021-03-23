@@ -17,27 +17,27 @@
     <div class="navigationBar">
         <ul >
             <li>
-                <a href="{% url 'sudoku:home' %}"> Sudoku Online</a>
+                <a href="{% url 'sudokugame:home' %}"> Sudoku Online</a>
             </li>
             <!-- We need  a drop down thingy here -->
             <li id="dropdown"> 
                 <div class="dropdown-content">
                     
-                    <a href="{% url 'sudoku:leaderboard'%}"> Leaderboard </a>
+                    <a href="{% url 'sudokugame:leaderboard'%}"> Leaderboard </a>
                     <!-- Only available when not logged in-->
                     
                     {% if user.is_authenticated %}
                     <!-- Only available when logged in-->
-                    <a href="{% url 'sudoku:profile'%}"> Profile </a>
-                    <a href="{% url 'sudoku:dailychallenge'%}"> Daily Challenge</a>
+                    <a href="{% url 'sudokugame:profile'%}"> Profile </a>
+                    <a href="{% url 'sudokugame:dailychallenge'%}"> Daily Challenge</a>
                     {% else %}
-                    <a href="{% url 'sudoku:login'%}"> Login </a>
-                    <a href="{% url 'sudoku:signup'%}"> Sign Up </a>
+                    <a href="{% url 'sudokugame:login'%}"> Login </a>
+                    <a href="{% url 'sudokugame:signup'%}"> Sign Up </a>
                     {% endif %}
 
-                    <a href="{% url 'sudoku:practice'%}"> Practice </a>
+                    <a href="{% url 'sudokugame:practice'%}"> Practice </a>
                     <!-- Static page with text-->
-                    <a href="{% url 'sudoku:help'%}"> Help </a>
+                    <a href="{% url 'sudokugame:help'%}"> Help </a>
                     
                 </div>
             </li>

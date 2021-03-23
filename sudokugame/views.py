@@ -1,7 +1,10 @@
 import sys
 from random import randrange
 
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from sudoku import Sudoku
 
@@ -19,12 +22,11 @@ def test(request):
 
 # Create a registration view
 def register(request):
-
     registered = False
 
     if request.method == 'POST':
         user_form = UserForm(request.POST)
-    
+
         if user_form.is_valid():
             # Save the user's form data to the database
             user = user_form.save()
@@ -37,6 +39,28 @@ def register(request):
             print  (user_form.errors)
     else:
         # The request is not 'POST', we render our form. Its ready for user input. 
-        user_form = UserForm()        
-    
+        user_form = UserForm()
+
     return render(request, 'sudokugame/register.html', context = {'user_form': user_form, 'registered': registered})
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                # TODO: Change this redirect to the index page once that has been created
+                return redirect(reverse("sudokugame:test"))
+            else:
+                return HttpResponse("Your account is disabled")
+        else:
+            print(f"Invalid login details: {username}, {password}")
+            return HttpResponse("Invalid login details supplied")
+
+    else:
+        return render(request, "sudokugame/login.html")

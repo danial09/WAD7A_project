@@ -11,7 +11,12 @@
     <script src="{% static 'sudokugame/board.js' %}"></script>
 </head>
 <body>
-<h1 style="text-align: center">Sudoku!</h1>
+
+{% if user.is_authenticated %}
+    <h1>Hello {{ user }}!</h1>
+{% else %}
+    <h1>Hi there!</h1>
+{% endif %}
 
 <div id="sudoku_container">
     <div id="sudoku_board">

@@ -36,12 +36,12 @@ def register(request):
             user.set_password(user.password)
             user.save()
         else:
-            print  (user_form.errors)
+            print(user_form.errors)
     else:
         # The request is not 'POST', we render our form. Its ready for user input. 
         user_form = UserForm()
 
-    return render(request, 'sudokugame/register.html', context = {'user_form': user_form, 'registered': registered})
+    return render(request, 'sudokugame/register.html', context={'user_form': user_form, 'registered': registered})
 
 
 def user_login(request):

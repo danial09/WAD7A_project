@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget =forms.PasswordInput())
+    password = forms.CharField(widget=forms.PasswordInput())
 
     def clean_email(self):
         email = self.cleaned_data.get("email")

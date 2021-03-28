@@ -19,6 +19,11 @@ def test(request):
 
     return render(request, 'sudokugame/test.html', context={'board': flattened})
 
+def home(request):
+    context_dict = {}
+
+    return render(request, 'sudokugame/home.html', context=context_dict)
+
 
 # Create a registration view
 def register(request):
@@ -54,8 +59,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                # TODO: Change this redirect to the index page once that has been created
-                return redirect(reverse("sudokugame:test"))
+                # Redirects to the Home page
+                return redirect(reverse("sudokugame:home"))
             else:
                 return HttpResponse("Your account is disabled")
         else:
@@ -64,3 +69,8 @@ def user_login(request):
 
     else:
         return render(request, "sudokugame/login.html")
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('sudokugame:home'))

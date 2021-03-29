@@ -1,0 +1,16 @@
+{% load static %}
+
+{% block title_block %}
+    Play
+{% endblock %}
+
+{% block body_block %}
+    {% if user.is_authenticated %}
+        <p>Welcome, </p> <!--USERNAME-->
+    {% else %}
+        <p>Welcome, user</p>
+    { % end if % }
+
+    <!-- board and info go here -->
+
+{% endblock %}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% extends 'sudokugame/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Home Page
+{% endblock %}
+
+{% block body_block %}
+    
+    <div class ="container-fluid">  
+        <h1>Sudoku</h1>
+        <div class="row">
+            <div class="col-sm-12" style="background-color:lightgreen;">
+                {% if user.is_authenticated %}
+                    Hi {{ user.username }}!
+                    Hope you're ready to play!
+                {% else %}
+                    Hey there!
+                    Hope you're ready to play!
+                {% endif %} 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4" style="background-color:lightgreen;">
+                <!--Buttons here, just need the links to their respective pages-->
+
+                <p><a href=""><button class="button1">Play Game</button></a></p>
+                <p><a href=""><button class="button1">Leader Boards</button></a></p>
+
+                {% if user.is_authenticated %}
+                    <p><a href=""><button class="button1">Daily Challenge</button></a></p>
+                {% endif %} 
+
+                <a href=""><button class="button2">How to Play</button></a>
+                <a href=""><button class="button2">Practice Game</button></a>
+
+            </div>
+            <div class="col-sm-8" style="background-color:lightgreen;">
+                <!--Need an image link and a link to the play page
+
+                <a href="">
+                    <img alt="Sudoku Board" src=""
+                    width="150" height="150">
+                 </a>
+
+                also check if thats a good width and height-->
+            </div>
+          </div>
+    </div>
+
+{% endblock %}

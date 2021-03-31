@@ -1,7 +1,8 @@
 import sys
 from random import randrange
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
@@ -18,6 +19,11 @@ def test(request):
     flattened = [str(cell) if cell is not None else '0' for row in puzzle.board for cell in row]
 
     return render(request, 'sudokugame/test.html', context={'board': flattened})
+
+def home(request):
+    context_dict = {}
+
+    return render(request, 'sudokugame/home.html', context=context_dict)
 
 
 # Create a registration view
@@ -54,8 +60,8 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request, user)
-                # TODO: Change this redirect to the index page once that has been created
-                return redirect(reverse("sudokugame:test"))
+                # Redirects to the Home page
+                return redirect(reverse("sudokugame:home"))
             else:
                 return HttpResponse("Your account is disabled")
         else:
@@ -64,3 +70,8 @@ def user_login(request):
 
     else:
         return render(request, "sudokugame/login.html")
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('sudokugame:home'))

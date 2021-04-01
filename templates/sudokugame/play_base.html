@@ -1,7 +1,31 @@
 {% extends 'sudokugame/base.html' %}
 
+{% load static %}
+{% load sudoku_template_tags %}
+
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/css/board.css' %}">
+{% endblock %}
+
 {% block body_block %}
+<main class="container-fluid pb-3 col-8">
+    <div class="d-grid gap-3 mx-auto text-center" style="grid-template-columns: 0.8fr 1fr;">
+        <div class="border rounded-3 border-dark d-inline-flex" style="min-width: 185px;">
+            <div id="left-panel-wrapper">
+                {% block left_panel_block %}
+                {% endblock %}
+            </div>
+        </div>
 
+        <div style="min-width: 450px;">
+            {% if board %}
+                {% get_board board %}
+            {% else %}
+                {% get_board %}
+            {% endif %}
+        </div>
 
+    </div>
 
+</main>
 {% endblock %}

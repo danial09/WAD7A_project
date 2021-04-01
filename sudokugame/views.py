@@ -10,9 +10,10 @@ from django.urls import reverse
 from sudoku import Sudoku
 
 from sudokugame.forms import UserForm
+from sudokugame.models import Board
 
+from sudokugame.sudoku_core import generate, flatten_join
 
-# Create your views here.
 
 def test(request):
     puzzle = Sudoku(3, 3, seed=randrange(sys.maxsize)).difficulty(0.7)
@@ -21,9 +22,26 @@ def test(request):
     return render(request, 'sudokugame/test.html', context={'board': flattened})
 
 def home(request):
-    context_dict = {}
+    return render(request, 'sudokugame/home.html')
 
-    return render(request, 'sudokugame/home.html', context=context_dict)
+
+def play(request):
+    #TODO: Add the ability to create boards of varying difficulties
+    #TODO: Change this so that it can access existing boards as well as create new ones
+    flattened_grid = flatten_join(generate('M').board)
+
+    board_filter = Board.objects.filter(grid=flattened_grid)
+
+    if board_filter.exists():
+        board = board_filter[0]
+    else:
+        board = Board()
+        board.grid = flattened_grid
+        board.difficulty = "M"
+        board.save()
+
+    return render(request, 'sudokugame/play.html', context={'board': board})
+
 
 
 # Create a registration view

@@ -10,7 +10,7 @@ from django.urls import reverse
 from sudoku import Sudoku
 
 from sudokugame.forms import UserForm
-from sudokugame.models import Board
+from sudokugame.models import Game, Board
 
 from sudokugame.sudoku_core import generate, flatten_join
 
@@ -93,3 +93,27 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('sudokugame:home'))
+
+@login_required
+def profile_page(request):
+
+    current_user = request.user
+    queryset = Game.objects.filter(user = current_user).order_by("-score")[:10]
+
+    context = {"users_games": queryset, "user": current_user}
+
+    return render(request, "sudokugame/profile.html", context)
+
+def leader_board(request):
+
+    querysetE = Game.objects.filter(board__difficulty = "E").order_by("-score")[:10]
+    querysetM = Game.objects.filter(board__difficulty = "M").order_by("-score")[:10]
+    querysetH = Game.objects.filter(board__difficulty = "H").order_by("-score")[:10]
+    querysetDC = Game.objects.exclude(posted_date__isnull = True).orderby("-posted_date").order_by("-score")[:10]
+
+    context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
+
+    return render(request, "sudokugame/leaderboard.html", context)
+
+
+

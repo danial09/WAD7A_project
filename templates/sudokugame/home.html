@@ -1,52 +1,23 @@
-<!DOCTYPE html>
-{% extends 'sudokugame/base.html' %}
-{% load static %}
+{% extends 'sudokugame/play_base.html' %}
 
 {% block title_block %}
-    Home Page
+    Home
 {% endblock %}
 
-{% block body_block %}
-    
-    <div class ="container-fluid">  
-        <h1>Sudoku</h1>
-        <div class="row">
-            <div class="col-sm-12" style="background-color:lightgreen;">
-                {% if user.is_authenticated %}
-                    Hi {{ user.username }}!
-                    Hope you're ready to play!
-                {% else %}
-                    Hey there!
-                    Hope you're ready to play!
-                {% endif %} 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-4" style="background-color:lightgreen;">
-                <!--Buttons here, just need the links to their respective pages-->
 
-                <p><a href=""><button class="button1">Play Game</button></a></p>
-                <p><a href=""><button class="button1">Leader Boards</button></a></p>
-
-                {% if user.is_authenticated %}
-                    <p><a href=""><button class="button1">Daily Challenge</button></a></p>
-                {% endif %} 
-
-                <a href=""><button class="button2">How to Play</button></a>
-                <a href=""><button class="button2">Practice Game</button></a>
-
-            </div>
-            <div class="col-sm-8" style="background-color:lightgreen;">
-                <!--Need an image link and a link to the play page
-
-                <a href="">
-                    <img alt="Sudoku Board" src=""
-                    width="150" height="150">
-                 </a>
-
-                also check if thats a good width and height-->
-            </div>
-          </div>
+{% block left_panel_block %}
+<div class="d-grid gap-5 mx-auto">
+    <div class="d-grid gap-3 col-8 mx-auto">
+        <button class="btn btn-primary p-3" type="button">New Game</button>
+        {% if user.is_authenticated %}
+            <button class="btn btn-success p-3" type="button">Daily Challenge</button>
+        {% endif %}
+        <button class="btn btn-warning p-3" type="button">Leaderboards</button>
     </div>
 
+    <div class="d-grid gap-1 d-md-flex justify-content-center">
+        <button class="btn btn-outline-dark me-md-2" type="button">How to Play</button>
+        <button class="btn btn-outline-dark" type="button">Practice</button>
+    </div>
+</div>
 {% endblock %}

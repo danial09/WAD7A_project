@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from sudokugame.sudoku_core import flatten, unflatten, solve, difficulties
+from sudokugame.sudoku_core import solve, difficulties, unflatten_split, flatten_join
 from django.contrib.auth.models import User
 
 
@@ -20,7 +20,7 @@ class Board(models.Model):
 
         try:
             # Calculate derived field
-            self.solution = flatten(solve(unflatten(self.grid)))
+            self.solution = flatten_join(solve(unflatten_split(self.grid)))
         except Exception as e:
             raise ValidationError(f"Invalid sudoku board: {e}")
 

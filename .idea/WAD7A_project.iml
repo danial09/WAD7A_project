@@ -18,6 +18,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
   </component>
   <component name="PackageRequirementsSettings">
     <option name="requirementsPath" value="C:\Users\dania\PycharmProjects\WAD7A_project\requirements.txt" />

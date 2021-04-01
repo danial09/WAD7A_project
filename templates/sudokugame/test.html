@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 
+{% extends 'sudokugame/base.html' %}
 {% load static %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Test</title>
+{% block title_block %}Test Board{% endblock %}
+{% block head_block %}
     <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/board-style.css' %}" />
     <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
     <script src="{% static 'sudokugame/board.js' %}"></script>
-</head>
-<body>
+{% endblock %}
 
-{% if user.is_authenticated %}
-    <h1>Hello {{ user }}!</h1>
-{% else %}
-    <h1>Hi there!</h1>
-{% endif %}
-
+{% block body_block %}
 <div id="sudoku_container">
     <div id="sudoku_board">
         {% for cell in board %}
@@ -29,6 +22,4 @@
         {% endfor %}
     </div>
 </div>
-
-</body>
-</html>
+{% endblock %}

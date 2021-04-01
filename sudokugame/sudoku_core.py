@@ -35,6 +35,7 @@ def solve(board):
     return solution.board
 
 
+
 def flatten(board):
     """
     Flatten a sudoku board. Converting the cell values into strings.
@@ -46,12 +47,29 @@ def flatten(board):
     return [str(cell) if cell is not None else '0' for row in board for cell in row]
 
 
-def unflatten(flattened_board):
+def flatten_join(board):
+    """
+    Flatten the board, and then join the resulting array of strings together
+    """
+
+    return ''.join(flatten(board))
+
+
+def unflatten(flattened_board, cast_fcn=int, zero_replace=None):
     """
     Inverse of the flatten() function.
     :param flattened_board: The sudoku board to unflatten as a 1-dimensional array of strings.
-    :return: The board passed represented as a 2-dimensional array of ints, with None for empty cells
+    :param cast_fcn: The type to cast the cells of the sudoku  board to
+    :param zero_replace: What value to replace zero-values cells
+    :return: The board passed represented as a 2-dimensional array
     """
-
-    return [[int(flattened_board[9 * i + j]) if flattened_board[9 * i + j] != '0' else None
+    return [[cast_fcn(flattened_board[9 * i + j]) if flattened_board[9 * i + j] != '0' else zero_replace
              for j in range(9)] for i in range(9)]
+
+
+def unflatten_split(board_str, cast_fcn=int, zero_replace=None):
+    """
+    Split the board string into an array of characters and then unflatten.
+    Inverse of flatten_join()
+    """
+    return unflatten([c for c in board_str], cast_fcn, zero_replace)

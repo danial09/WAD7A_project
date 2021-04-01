@@ -1,0 +1,18 @@
+<table id="game-board">
+    <tbody>
+    {% for row in grid %}
+    <tr class="game-row">
+        {% for cell in row %}
+            <td class="game-cell">
+                {% if cell == '0' %}
+                <div class="cell-value">&nbsp;</div>
+                {% else %}
+                <div class="cell-value fixed-cell">{{ cell }}</div>
+                <div class="notes-grid"></div>
+                {% endif %}
+            </td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>

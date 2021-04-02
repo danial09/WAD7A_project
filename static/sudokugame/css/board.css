@@ -41,6 +41,7 @@
 .game-cell:hover {
     cursor: pointer;
     overflow: hidden;
+    background-color: rgba(65, 105, 225, 0.4);
 }
 
 .game-cell:nth-child(3), .game-cell:nth-child(6) {
@@ -90,12 +91,9 @@
     background-color: rgba(65, 105, 225, 0.2);
 }
 
-.game-cell:hover {
-    background-color: rgba(65, 105, 225, 0.2);
-}
-
 #focused-cell {
-    background-color: rgba(65, 105, 225, 0.6);
+    background-color: rgba(65, 105, 225, 0.8);
+    color: white;
 }
 
 .notes-grid {
@@ -112,8 +110,8 @@
     position: relative;
     width: 33.33%;
     height: 33.33%;
-    display: none;
     font-size: 10px;
     line-height: 20px;
     text-align: center;
+    float: left;
 }

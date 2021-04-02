@@ -3,14 +3,11 @@
     {% for row in grid %}
     <tr class="game-row">
         {% for cell in row %}
-            <td class="game-cell">
-                {% if cell == '0' %}
-                <div class="cell-value"></div>
-                {% else %}
-                <div class="cell-value fixed-cell">{{ cell }}</div>
-                <div class="notes-grid"></div>
-                {% endif %}
-            </td>
+            {% if cell == '0' %}
+                <td class="game-cell"><div class="cell-value"></div><div class="notes-grid"></div></td>
+            {% else %}
+                <td class="game-cell fixed-cell"><div class="cell-value">{{ cell }}</div></td>
+            {% endif %}
         {% endfor %}
     </tr>
     {% endfor %}

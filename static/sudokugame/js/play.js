@@ -3,10 +3,16 @@ $(document).ready(function() {
         focusCell($(target.target).closest(".game-cell"));
     });
     $("body").keydown((event) => {
-        console.log(event.key);
         if (event.key.startsWith("Arrow")) {
-            event.preventDefault();
             cellChangeFocus(event.key);
+
+        } else if ((event.key === 'Delete' || event.key === 'Backspace' || event.key === '0') &&
+                !($("#focused-cell").hasClass("fixed-cell"))) {
+
+            $("#focused-cell").children().empty();
+            $(".related-grid-cell").removeClass("related-grid-cell");
+        } else if (!isNaN(parseInt(event.key))) {
+            cellInput(event.key);
         }
     })
 })
@@ -14,6 +20,13 @@ $(document).ready(function() {
 function mod(n, m) {
     // Function to only get the positive mod result.
     return ((n % m) + m) % m;
+}
+
+function highlightRelatedCells(cell) {
+    let cellValue = $(cell).find(".cell-value").html();
+    if (cellValue === "") cellValue = 0;
+    $(".related-grid-cell").removeClass("related-grid-cell");
+    $(".cell-value:contains(" + cellValue +")").parent().addClass("related-grid-cell");
 }
 
 function focusCell(cell) {
@@ -27,6 +40,7 @@ function focusCell(cell) {
     $(".game-cell:nth-child(" + ($(cell).index() + 1) + ")").addClass("related-col-cell");
     $(cell).removeClass("related-col-cell"); // Probably not necessary.
 
+    highlightRelatedCells(cell);
 }
 
 function cellChangeFocus(direction) {
@@ -45,4 +59,26 @@ function cellChangeFocus(direction) {
         newCell = $(newRow).children()[curPosition];
     }
     focusCell(newCell);
+}
+
+function cellInput(key) {
+    const inputMode = document.getElementById("btn-input").checked === true ? "input" : "notes";
+    const valueGrid = $("#focused-cell").find(".cell-value");
+    const notesGrid = $("#focused-cell").find(".notes-grid");
+
+    if (inputMode === "input") {
+        notesGrid.empty();
+        // TODO: Add an AJAX call here to validate user input
+        valueGrid.html(key);
+        highlightRelatedCells($("#focused-cell"));
+    } else {
+        valueGrid.empty();
+        const existingNote = $(notesGrid).find($(":contains(" + key + ")"))
+        if (existingNote.length !== 0) {
+            $(existingNote).remove();
+        } else {
+            const newNote = $("<div></div>").addClass("notes-grid-cell").append(key);
+            notesGrid.append(newNote)
+        }
+    }
 }

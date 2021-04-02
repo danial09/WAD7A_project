@@ -22,23 +22,4 @@
     </div>
 </div>
 
-<!-- Play Modal -->
-<div class="modal fade" id="playModal" tabindex="-1" aria-labelledby="playModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="playModalLabel">Select Difficulty</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-grid gap-1 d-md-flex justify-content-center">
-                    <a href="{% url 'sudokugame:play' %}?difficulty=E"><button class="btn btn-primary btn-lg btn-success" type="button">Easy</button></a>
-                    <a href="{% url 'sudokugame:play' %}?difficulty=M"><button class="btn btn-primary btn-lg btn-warning" type="button">Medium</button></a>
-                    <a href="{% url 'sudokugame:play' %}?difficulty=H"><button class="btn btn-primary btn-lg btn-danger" type="button">Hard</button></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 {% endblock %}

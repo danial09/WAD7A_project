@@ -1,13 +1,14 @@
 <svg width="403" height="400" xmlns="http://www.w3.org/2000/svg">
  <g>
   <title>Layer 1</title>
-  <rect fill="#000000" stroke="#000" fill-opacity="0" opacity="undefined" x="28" y="20" width="354" height="354" id="svg_6" stroke-width="12"/>
+  <rect fill="#ffffff" stroke="#000" opacity="undefined" x="26" y="23" width="354" height="354" id="svg_6" stroke-width="12"/>
   <line fill="none" stroke-width="12" stroke-dasharray="null" stroke-opacity="null" fill-opacity="0" opacity="undefined" x1="143" y1="21" x2="143" y2="373" id="svg_7" stroke-linejoin="null" stroke-linecap="null" stroke="#000"/>
   <line stroke="#000" fill="none" stroke-width="12" stroke-dasharray="null" stroke-opacity="null" fill-opacity="0" opacity="undefined" x1="261" y1="21.99998" x2="261" y2="373" id="svg_8" stroke-linejoin="null" stroke-linecap="null"/>
   <line stroke="#000" fill="none" stroke-width="12" stroke-dasharray="null" stroke-opacity="null" fill-opacity="0" opacity="undefined" x1="204.50002" y1="-39.50002" x2="204.50002" y2="320.49998" id="svg_10" stroke-linejoin="null" stroke-linecap="null" transform="rotate(-90 204.5000152587891,140.49998474121094) "/>
   <line fill="none" stroke-width="12" stroke-dasharray="null" stroke-opacity="null" fill-opacity="0" opacity="undefined" x1="201.99998" y1="82.99999" x2="201.99998" y2="434.00002" id="svg_11" stroke-linejoin="null" stroke-linecap="null" transform="rotate(-90 201.99998474121102,258.50000000000006) " stroke="#000"/>
-  <rect fill="#529D94" stroke-width="0" stroke-dasharray="null" opacity="undefined" x="33" y="26" width="104" height="109" id="svg_2" stroke="null"/>
-  <rect fill="#529D94" stroke-width="0" stroke-dasharray="null" opacity="undefined" x="32" y="264" width="107" height="104" id="svg_3" stroke="null"/>
+  <rect fill="#529D94" stroke-width="0" stroke-dasharray="null" opacity="undefined" x="31" y="28" width="107" height="109" id="svg_2" stroke="null"/>
+  <rect fill="#529D94" stroke-width="0" stroke-dasharray="null" opacity="undefined" x="31" y="261" width="107" height="110" id="svg_3" stroke="null"/>
   <rect fill="#529D94" stroke-width="0" stroke-dasharray="null" opacity="undefined" x="266" y="145" width="110" height="110" id="svg_4" stroke="null"/>
  </g>
+
 </svg>

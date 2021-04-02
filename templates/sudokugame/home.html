@@ -9,12 +9,10 @@
 <div class="d-grid gap-5 mx-auto">
     <div class="d-grid gap-3 col-8 mx-auto">
         <button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#playModal">New Game</button>
-
         {% if user.is_authenticated %}
             <button class="btn btn-success p-3" type="button">Daily Challenge</button>
         {% endif %}
-        <button class="btn btn-warning p-3" type="button">Leaderboards</button>
-        <a href="{% url 'sudokugame:leaderboard' %}"><input class ="btn btn-warning p-3" type="button" value = "Leaderboard"></a>
+        <a href="{% url 'sudokugame:leaderboard' %}" class="btn btn-warning p-3" type="button">Leaderboards</a>
     </div>
 
     <div class="d-grid gap-3 d-md-flex justify-content-center">

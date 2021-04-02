@@ -7,7 +7,7 @@
     <h1>Register to Online Sudoku</h1>
     {% if registered %}
         <strong>Thank you for registering!</strong>
-        <a href="{% url 'sudokugame:test' %}">Return to the homepage.</a><br />
+        <a href="{% url 'sudokugame:home' %}">Return to the homepage.</a><br />
     {% else %}
          <strong>Register here!</strong>
         <form id="user_form" method="post" action="{% url 'sudokugame:register' %}" enctype="multipart/form-data">
@@ -16,6 +16,6 @@
         <!-- Provide a button to click to submit the whole form. -->
         <input type="submit" name="submit" value="Register" />
         </form>
-        <a href="{% url 'sudokugame:test' %}"><input type="button" value = "Back"></a><br />
+        <a href="{% url 'sudokugame:home' %}"><input type="button" value = "Back"></a><br />
     {% endif %}
 {% endblock %}

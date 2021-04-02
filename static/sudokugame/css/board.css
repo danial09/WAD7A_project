@@ -3,10 +3,6 @@
     margin: auto;
 }
 
-#board-container {
-    width: 35%;
-}
-
 #game-board {
     border-collapse: collapse;
     border: 2px solid black;
@@ -88,6 +84,10 @@
 }
 
 .related-grid-cell {
+    background-color: rgba(65, 105, 225, 0.2);
+}
+
+.related-num-cell {
     background-color: rgba(65, 105, 225, 0.2);
 }
 

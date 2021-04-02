@@ -10,7 +10,7 @@ $(document).ready(function() {
                 !($("#focused-cell").hasClass("fixed-cell"))) {
 
             $("#focused-cell").children().empty();
-            $(".related-grid-cell").removeClass("related-grid-cell");
+            $(".related-num-cell").removeClass("related-num-cell");
         } else if (!isNaN(parseInt(event.key))) {
             cellInput(event.key);
         }
@@ -23,10 +23,29 @@ function mod(n, m) {
 }
 
 function highlightRelatedCells(cell) {
+    $(".related-num-cell").removeClass("related-num-cell");
+
     let cellValue = $(cell).find(".cell-value").html();
     if (cellValue === "") cellValue = 0;
+    $(".cell-value:contains(" + cellValue +")").parent().addClass("related-num-cell");
+}
+
+function highlightSubgrid(cell) {
     $(".related-grid-cell").removeClass("related-grid-cell");
-    $(".cell-value:contains(" + cellValue +")").parent().addClass("related-grid-cell");
+
+    const gridStartColumn = Math.floor($(cell).index() / 3) * 3;
+    const gridStartRow = Math.floor($(cell).parent().index() / 3) * 3;
+
+    const rows = $(".game-row");
+    for (let i = gridStartRow; i < gridStartRow + 3; i++) {
+        const cells = $(rows[i]).find(".game-cell");
+        for (let j = gridStartColumn; j < gridStartColumn + 3; j++) {
+            if (cells[j] !== cell) {
+                $(cells[j]).addClass("related-grid-cell")
+            }
+        }
+    }
+
 }
 
 function focusCell(cell) {
@@ -41,6 +60,7 @@ function focusCell(cell) {
     $(cell).removeClass("related-col-cell"); // Probably not necessary.
 
     highlightRelatedCells(cell);
+    highlightSubgrid(cell);
 }
 
 function cellChangeFocus(direction) {

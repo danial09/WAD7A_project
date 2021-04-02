@@ -1,4 +1,5 @@
 {% extends 'sudokugame/play_base.html' %}
+{% load static %}
 
 {% block title_block %}
     Play
@@ -39,5 +40,9 @@
         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#playModal">New Game</button>
     </div>
 </div>
+{% endblock %}
 
+{% block body_block %}
+    {{ block.super }}
+    <script src="{% static 'sudokugame/js/play.js' %}"></script>
 {% endblock %}

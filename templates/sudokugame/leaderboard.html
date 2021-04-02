@@ -1,0 +1,44 @@
+{% extends 'sudokugame/base.html' %}
+{% load static %}
+
+{% block title_block %}
+ Leaderboard
+{% endblock %}
+
+{% block body_block%}
+{% if user.is_authenticated %}
+    <h1>Welcome to Leaderboards {{ user.username }}</h1>
+{% else %}
+    <h1>Leaderboards</h1>
+{% endif %}
+
+<div class ="dynamic table"
+<div class="table">
+ <table class = "Leaderboard-table" style= "border: 1px solid black; width: 500px;"> 
+    <thead>
+    <tr>
+        <th>Rank</th>
+        <th> Username </th>
+        <th> Score </th>
+    <tr>
+    </thead>   
+    <tbody>
+    
+    {% for easyData in Easygamelist %}
+        <td> {{forloop.counter}}</td>
+        <td> {{easyData.user.username}}</td>
+        <td> {{easeData.score}}</td>   
+    
+    {% empty %}
+        <td> 1</td>
+        <td> test123</td>
+        <td> 500</td>
+        
+      {% endfor %}  
+    </tbody> 
+    </table>
+    </div>
+ </div>   
+
+    {% endblock%}
+

@@ -110,7 +110,8 @@ def leader_board(request):
     querysetE = Game.objects.filter(board__difficulty = "E").order_by("-score")[:10]
     querysetM = Game.objects.filter(board__difficulty = "M").order_by("-score")[:10]
     querysetH = Game.objects.filter(board__difficulty = "H").order_by("-score")[:10]
-    querysetDC = Game.objects.exclude(posted_date__isnull = True).orderby("-posted_date").order_by("-score")[:10]
+    querysetDCTemp = Game.objects.filter(board__postedDate__isnull = False)
+    querysetDC = querysetDCTemp.order_by("board__postedDate").order_by("-score")[:10]
 
     context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
 

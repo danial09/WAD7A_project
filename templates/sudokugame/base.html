@@ -31,6 +31,11 @@
         <ul class="navbar-nav me-4">
         {% block navbar_items %}
             {#    Additional navbar items go in this block    #}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'sudokugame:home' %}">
+                    <img src="{% static "sudokugame/img/house.svg" %}" width="32" height="32" alt="Home">
+                </a>
+            </li>
         {% endblock %}
 
             {% if user.is_authenticated %}

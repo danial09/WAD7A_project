@@ -17,6 +17,7 @@
             </div>
         </div>
 
+        {% block board_block %}
         <div style="min-width: 450px;">
             {% if board %}
                 {% get_board board %}
@@ -24,6 +25,7 @@
                 {% get_board %}
             {% endif %}
         </div>
+        {% endblock %}
 
     </div>
 

@@ -4,7 +4,7 @@ from random import randrange
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 
 from sudoku import Sudoku
@@ -12,30 +12,37 @@ from sudoku import Sudoku
 from sudokugame.forms import UserForm
 from sudokugame.models import Game, Board
 
-from sudokugame.sudoku_core import generate, flatten_join
+from sudokugame.sudoku_core import generate, flatten_join, difficulties
 
 
 def home(request):
     return render(request, 'sudokugame/home.html')
 
 
-def play(request):
-    #TODO: Add the ability to create boards of varying difficulties
-    #TODO: Change this so that it can access existing boards as well as create new ones
-    flattened_grid = flatten_join(generate('M').board)
+def create_board(request):
+    board_id = request.GET.get('id')
+    if board_id is not None:
+        return get_object_or_404(Board, pk=board_id)
 
-    board_filter = Board.objects.filter(grid=flattened_grid)
+    difficulty = request.GET.get('difficulty', 'M')
+    # Sanity check to make sure difficulty passed does in fact exist.
+    difficulty = difficulty if difficulty in difficulties else 'M'
+    board = generate(difficulty).board
+    flattened = flatten_join(board)
 
-    if board_filter.exists():
-        board = board_filter[0]
+    board = Board.objects.filter(grid=flattened)
+    if bool(board):
+        return board[0]
     else:
-        board = Board()
-        board.grid = flattened_grid
-        board.difficulty = "M"
+        board = Board(grid=flattened, difficulty=difficulty)
         board.save()
+        return board
+
+
+def play(request):
+    board = create_board(request)
 
     return render(request, 'sudokugame/play.html', context={'board': board})
-
 
 
 # Create a registration view

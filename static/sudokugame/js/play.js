@@ -34,11 +34,9 @@ function cellChangeFocus(direction) {
     const curPosition = $(curCell).index();
     let newCell = null;
     if ($(curCell).length === 0) {
-        console.log("Hello");
         newCell = $(".game-cell").first();
     } else if (direction === "ArrowRight" || direction === "ArrowLeft") {
         const newPosition = mod(curPosition + (direction === "ArrowRight" ? 1 : -1), 9);
-        console.log("new position: " + newPosition);
         newCell = curCell.parent().children()[newPosition];
     } else {
         const curRow = $(curCell).parent();
@@ -47,8 +45,4 @@ function cellChangeFocus(direction) {
         newCell = $(newRow).children()[curPosition];
     }
     focusCell(newCell);
-}
-
-function cellKeyDown(cell, event) {
-    console.log(event.key + " pressed on cell: " + $(cell));
 }

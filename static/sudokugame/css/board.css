@@ -62,7 +62,7 @@
 .cell-value {
     display: inline-block;
     position: absolute;
-    color: lightgray;
+    color: darkslategray;
     text-align: center;
     top: 0;
     left: 0;

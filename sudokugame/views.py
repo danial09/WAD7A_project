@@ -59,6 +59,7 @@ def register(request):
             # then update the user object. 
             user.set_password(user.password)
             user.save()
+            registered =True
         else:
             print(user_form.errors)
     else:

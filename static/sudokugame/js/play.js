@@ -12,10 +12,8 @@ function focusCell(cell) {
     $(cell).siblings().addClass("related-row-cell");
 
     $(".related-col-cell").removeClass("related-col-cell");
-    const col_position = $(cell).index();
-    const selector = $(":nth-child(" + (col_position + 1) + ")");
-    $(cell).parent().siblings().find(selector).addClass("related-col-cell");
-    // $(cell).parent().siblings().each(() => console.log($(this).prop("tagName")));
+    $(".game-cell:nth-child(" + ($(cell).index() + 1) + ")").addClass("related-col-cell");
+    $(cell).removeClass("related-col-cell"); // Probably not necessary.
 
 }
 

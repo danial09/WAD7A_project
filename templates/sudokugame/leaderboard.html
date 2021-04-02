@@ -40,5 +40,12 @@
     </div>
  </div>   
 
+<button class="btn btn-outline-dark" type="button" value ="E">Easy</button>
+<button class="btn btn-outline-dark" type="button" value = "M">Medium</button>
+<button class="btn btn-outline-dark" type="button" value ="H">Hard</button>
+{% if user.is_authenticated %}
+    <button class="btn btn-outline-dark" type="button" value ="">Daily Challenge</button>
+{% endif %}
+
     {% endblock%}
 

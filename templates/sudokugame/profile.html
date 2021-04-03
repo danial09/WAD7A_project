@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends 'sudokugame/base.html' %}
+{% load static %}
+
+{% block title_block %}
+{{ user.username }} Profile
+{% endblock %}
+
+{% block body_block %}
+    <h1> Welcome {{ user.username }}! </h1>
+    {% if users_game.exists() %}
+    <style>
+        table, th, td {
+          border: 1px solid grey;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 5px;
+          text-align: center;
+        }
+    </style>
+        <table class="center" style="width:50%">
+            <tr>
+                <th>Game</th>
+                <th>Score</th> 
+                <th>Difficulty</th>
+                <th>Date</th>
+            </tr>
+        {% for game in users_game%}
+            <tr>
+                <th><a href="">Game</a></th>
+                <th>{{game.score}}</th> 
+                <th>{{game.board__difficulty}}</th>
+                <th>{{game.submissionDate}}</th>
+            </tr>
+    {% else %}
+        <p> You have played no games.</p>
+    {% endif %}
+{% endblock %}

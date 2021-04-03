@@ -1,18 +1,27 @@
+{% extends 'sudokugame/base.html' %}
+
 {% load static %}
 
 {% block title_block %}
-    Login
+	Login
 {% endblock %}
 
 {% block body_block %}
-    <h1>Login</h1>
-    <form id="login_form" method="post"action="{% url 'sudokugame:login' %}">
+<form id="login_form" method="post"action="{% url 'sudokugame:login' %}">
     {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" />
-    <br />
-    Password: <input type="password" name="password" value="" size="50" />
-    <br />
-    <input type="submit" value="submit" />
-    </form>
-    <a href="{% url 'sudokugame:home' %}"><input type="button" value = "Back"></a><br />
+    <!--plz double check-->
+
+    <div class="mb-3">
+        <label for="username" class="form-label">Username:</label>
+        <input type="text" class="form-control" id="username" name="username" value="" size="50">
+    </div>
+
+    <div class="mb-3">
+        <label for="password" class="form-label">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" value="" size="50">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
 {% endblock %}

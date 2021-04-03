@@ -18,11 +18,12 @@ class Board(models.Model):
                 (self.difficulty is not None and self.postedDate is not None)):
             raise ValidationError("Exactly one of the fields: 'difficulty' and 'postedDate' must be null")
 
-        try:
-            # Calculate derived field
-            self.solution = flatten_join(solve(unflatten_split(self.grid)))
-        except Exception as e:
-            raise ValidationError(f"Invalid sudoku board: {e}")
+        if self.solution is None:
+            try:
+                # If this field was not already set, calculate it now.
+                self.solution = flatten_join(solve(unflatten_split(self.grid)))
+            except Exception as e:
+                raise ValidationError(f"Invalid sudoku board: {e}")
 
         super(Board, self).save(*args, **kwargs)
 

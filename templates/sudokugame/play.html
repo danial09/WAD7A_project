@@ -5,7 +5,6 @@
     Play
 {% endblock %}
 
-
 {% block left_panel_block %}
 
 {% if user.is_authenticated %}
@@ -28,10 +27,10 @@
 
     <div class="d-grid col-5 mx-auto">
         <div class="btn-group" role="group">
-            <input type="radio" class="btn-check" name="game-input" id="btn-input" autocomplete="off" checked>
+            <input type="radio" class="btn-check" name="game-input" id="btn-input" autocomplete="off" onclick="this.blur();" checked>
             <label class="btn btn-outline-primary" for="btn-input">Input</label>
 
-            <input type="radio" class="btn-check" name="game-input" id="btn-notes" autocomplete="off">
+            <input type="radio" class="btn-check" name="game-input" id="btn-notes" onclick="this.blur();" autocomplete="off">
             <label class="btn btn-outline-secondary" for="btn-notes">Notes</label>
         </div>
     </div>
@@ -44,5 +43,13 @@
 
 {% block body_block %}
     {{ block.super }}
-    <script src="{% static 'sudokugame/js/play.js' %}"></script>
+
+    <script src="{% static 'sudokugame/js/sudoku.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            let game = new Sudoku(3, 3);
+            game.start();
+        })
+    </script>
+
 {% endblock %}

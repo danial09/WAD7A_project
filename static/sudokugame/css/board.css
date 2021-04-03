@@ -37,7 +37,7 @@
 .game-cell:hover {
     cursor: pointer;
     overflow: hidden;
-    background-color: rgba(65, 105, 225, 0.4);
+    background-color: rgba(67, 226, 200, 0.4);
 }
 
 .game-cell:nth-child(3), .game-cell:nth-child(6) {
@@ -88,7 +88,8 @@
 }
 
 .related-num-cell {
-    background-color: rgba(65, 105, 225, 0.2);
+    background-color: rgba(0,116,217, 0.4);
+    color: white;
 }
 
 #focused-cell {

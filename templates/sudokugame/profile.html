@@ -8,7 +8,6 @@
 
 {% block body_block %}
     <h1> Welcome {{ user.username }}! </h1>
-    {% if users_game.exists() %}
     <style>
         table, th, td {
           border: 1px solid grey;
@@ -26,14 +25,20 @@
                 <th>Difficulty</th>
                 <th>Date</th>
             </tr>
-        {% for game in users_game%}
+        {% for game in games%}
             <tr>
-                <th><a href="">Game</a></th>
-                <th>{{game.score}}</th> 
-                <th>{{game.board__difficulty}}</th>
-                <th>{{game.submissionDate}}</th>
+                <td><a href="{% url 'sudokugame:play' %}?id={{ game.board.id }}">Game</a></td>
+                <td>{{game.score}}</td>
+                {% if game.board.difficulty %}
+                    <td>{{game.board.get_difficulty_display}}</td>
+                {% else %}
+                    <td>Daily Challenge</td>
+                {% endif %}
+                <td>{{game.submissionDate}}</td>
             </tr>
-    {% else %}
-        <p> You have played no games.</p>
-    {% endif %}
+
+        {% empty %}
+            <tr><td colspan="4">You have played no games. <a href="{% url 'sudokugame:play' %}">Play Now</a> </td></tr>
+        {% endfor %}
+        </table>
 {% endblock %}

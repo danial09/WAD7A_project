@@ -27,14 +27,18 @@ def create_board(request):
     difficulty = request.GET.get('difficulty', 'M')
     # Sanity check to make sure difficulty passed does in fact exist.
     difficulty = difficulty if difficulty in difficulties else 'M'
-    board = generate(difficulty).board
-    flattened = flatten_join(board)
+    board_base = generate(difficulty)
+    board = board_base.board
+    solution = board_base.solve().board
 
-    board = Board.objects.filter(grid=flattened)
+    flattened_board = flatten_join(board)
+    flattened_solution = flatten_join(solution)
+
+    board = Board.objects.filter(grid=flattened_board)
     if bool(board):
         return board[0]
     else:
-        board = Board(grid=flattened, difficulty=difficulty)
+        board = Board(grid=flattened_board, solution=flattened_solution, difficulty=difficulty)
         board.save()
         return board
 

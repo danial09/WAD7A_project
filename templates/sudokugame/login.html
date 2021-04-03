@@ -7,21 +7,22 @@
 {% endblock %}
 
 {% block body_block %}
-<form id="login_form" method="post"action="{% url 'sudokugame:login' %}">
-    {% csrf_token %}
-    <!--plz double check-->
+<main class="container-fluid pb-3 col-6">
+    <form id="login_form" method="post" action="{% url 'sudokugame:login' %}">
+        {% csrf_token %}
 
-    <div class="mb-3">
-        <label for="username" class="form-label">Username:</label>
-        <input type="text" class="form-control" id="username" name="username" value="" size="50">
-    </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" value="" size="50">
+        </div>
 
-    <div class="mb-3">
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" class="form-control" id="password" name="password" value="" size="50">
-    </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" value="" size="50">
+        </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
 
-</form>
+    </form>
+</main>
 {% endblock %}

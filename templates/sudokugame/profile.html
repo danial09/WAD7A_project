@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% extends 'sudokugame/base.html' %}
+{% load static %}
+
+{% block title_block %}
+{{ user.username }} Profile
+{% endblock %}
+
+{% block body_block %}
+    <h1> Welcome {{ user.username }}! </h1>
+    <style>
+        table, th, td {
+          border: 1px solid grey;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 5px;
+          text-align: center;
+        }
+    </style>
+        <table class="center" style="width:50%">
+            <tr>
+                <th>Game</th>
+                <th>Score</th> 
+                <th>Difficulty</th>
+                <th>Date</th>
+            </tr>
+        {% for game in games%}
+            <tr>
+                <td><a href="{% url 'sudokugame:play' %}?id={{ game.board.id }}">Game</a></td>
+                <td>{{game.score}}</td>
+                {% if game.board.difficulty %}
+                    <td>{{game.board.get_difficulty_display}}</td>
+                {% else %}
+                    <td>Daily Challenge</td>
+                {% endif %}
+                <td>{{game.submissionDate}}</td>
+            </tr>
+
+        {% empty %}
+            <tr><td colspan="4">You have played no games. <a href="{% url 'sudokugame:play' %}">Play Now</a> </td></tr>
+        {% endfor %}
+        </table>
+{% endblock %}

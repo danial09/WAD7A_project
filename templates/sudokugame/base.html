@@ -45,7 +45,7 @@
                         <img class="border rounded-circle border-dark" src="{% static "sudokugame/img/person-fill.svg" %}" width="32" height="32" alt="{{ user.username }}">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">View profile</a></li>
+                        <li><a class="dropdown-item" href="{% url 'sudokugame:profilepage' %}">View profile</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{% url 'sudokugame:logout' %}"><span style="color: red;">Sign out</span></a></li>
 

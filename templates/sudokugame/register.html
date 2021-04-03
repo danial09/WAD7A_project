@@ -1,21 +1,26 @@
+{% extends 'sudokugame/base.html' %}
+
 {% load static %}
+{% load bootstrap5 %}
 
 {% block title_block %}
     Register
 {% endblock %}
+
+
 {% block body_block %}
-    <h1>Register to Online Sudoku</h1>
-    {% if registered %}
-        <strong>Thank you for registering!</strong>
-        <a href="{% url 'sudokugame:home' %}">Return to the homepage.</a><br />
-    {% else %}
-         <strong>Register here!</strong>
-        <form id="user_form" method="post" action="{% url 'sudokugame:register' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        <!-- Provide a button to click to submit the whole form. -->
-        <input type="submit" name="submit" value="Register" />
-        </form>
-        <a href="{% url 'sudokugame:home' %}"><input type="button" value = "Back"></a><br />
-    {% endif %}
+<main class="container-fluid pb-3 col-4 border rounded-1">
+    <h1 class="text-center">Register to Online Sudoku</h1>
+
+    <form id="user_form" role="form" method="post" action="{% url 'sudokugame:register' %}">
+    {% csrf_token %}
+        {% bootstrap_form user_form %}
+
+        <div class="text-center p-2">
+            <p>Already have an account? <a href="{% url 'sudokugame:login' %}">Sign In</a></p>
+            <button type="submit" class="btn btn-primary btn-lg">Sign Up</button>
+        </div>
+    </form>
+
+</main>
 {% endblock %}

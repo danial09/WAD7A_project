@@ -1,27 +1,23 @@
 {% extends 'sudokugame/base.html' %}
 
 {% load static %}
+{% load bootstrap5 %}
 
 {% block title_block %}
 	Login
 {% endblock %}
 
 {% block body_block %}
-<main class="container-fluid pb-3 col-6">
+<main class="container-fluid pb-3 col-4 border rounded-1">
+    <h1 class="text-center">Login to Online Sudoku</h1>
     <form id="login_form" method="post" action="{% url 'sudokugame:login' %}">
         {% csrf_token %}
+        {% bootstrap_form user_form bound_css_class='' %}
 
-        <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
-            <input type="text" class="form-control" id="username" name="username" value="" size="50">
+        <div class="text-center p-2">
+            <p>Don't have an account? <a href="{% url 'sudokugame:register' %}">Sign Up</a></p>
+            <button type="submit" class="btn btn-primary btn-lg">Log In</button>
         </div>
-
-        <div class="mb-3">
-            <label for="password" class="form-label">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" value="" size="50">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
 </main>

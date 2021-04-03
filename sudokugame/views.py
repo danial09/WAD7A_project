@@ -1,13 +1,10 @@
 import sys
-from random import randrange
 
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-
-from sudoku import Sudoku
 
 from sudokugame.forms import UserForm
 from sudokugame.models import Game, Board
@@ -51,8 +48,6 @@ def play(request):
 
 # Create a registration view
 def register(request):
-    registered = False
-
     if request.method == 'POST':
         user_form = UserForm(request.POST)
 
@@ -64,36 +59,32 @@ def register(request):
             # then update the user object. 
             user.set_password(user.password)
             user.save()
-            registered =True
+            return redirect(reverse('sudokugame:login'))
         else:
             print(user_form.errors)
     else:
         # The request is not 'POST', we render our form. Its ready for user input. 
         user_form = UserForm()
 
-    return render(request, 'sudokugame/register.html', context={'user_form': user_form, 'registered': registered})
+    return render(request, 'sudokugame/register.html', context={'user_form': user_form})
 
 
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect(reverse("sudokugame:home"))
+
     if request.method == 'POST':
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+        form = AuthenticationForm(request=request, data=request.POST)
 
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                # Redirects to the Home page
-                return redirect(reverse("sudokugame:home"))
-            else:
-                return HttpResponse("Your account is disabled")
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect(reverse("sudokugame:home"))
         else:
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied")
-
+            print(form.errors)
     else:
-        return render(request, "sudokugame/login.html")
+        form = AuthenticationForm()
+
+    return render(request, 'sudokugame/login.html', context={'user_form': form})
 
 @login_required
 def user_logout(request):
@@ -121,6 +112,3 @@ def leader_board(request):
     context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
 
     return render(request, "sudokugame/leaderboard.html", context)
-
-
-

@@ -5,7 +5,6 @@
     Play
 {% endblock %}
 
-
 {% block left_panel_block %}
 
 {% if user.is_authenticated %}
@@ -44,5 +43,13 @@
 
 {% block body_block %}
     {{ block.super }}
-    <script src="{% static 'sudokugame/js/play.js' %}"></script>
+
+    <script src="{% static 'sudokugame/js/sudoku.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            let game = new Sudoku(3, 3);
+            game.start();
+        })
+    </script>
+
 {% endblock %}

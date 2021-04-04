@@ -27,14 +27,6 @@
                 <tr>
                 </thead>
                 <tbody id="leaderboard_body">
-
-                {% for queryData in Mediumgamelist %}
-                    <tr>
-                        <td> {{forloop.counter}}</td>
-                        <td> {{queryData.user.username}}</td>
-                        <td> {{queryData.score}}</td>
-                    </tr>
-                {% endfor %}
                 </tbody>
                 </table>
         </div>
@@ -42,31 +34,31 @@
             <div>
                 <h4 class="p-1"> Board</h4>
                 <div class="d-grid">
-                    <div class="btn-group " role="group">
-                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-easy" autocomplete="off" onclick="this.blur();">
+                    <div class="btn-group leaderboard-btn board-type-btn" role="group">
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-easy" autocomplete="off" data-query="E">
                         <label class="btn btn-outline-success" for="btn-easy">Easy</label>
 
-                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-medium" onclick="this.blur();" autocomplete="off" checked>
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-medium" autocomplete="off" data-query="M" checked>
                         <label class="btn btn-outline-warning" for="btn-medium">Medium</label>
 
-                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-hard" onclick="this.blur();" autocomplete="off">
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-hard" autocomplete="off" data-query="H">
                         <label class="btn btn-outline-danger" for="btn-hard">Hard</label>
 
-                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-challenge" onclick="this.blur();" autocomplete="off">
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-challenge" autocomplete="off" data-query="DC">
                         <label class="btn btn-outline-primary" for="btn-challenge">Daily Challenge</label>
                     </div>
                 </div>
             </div>
             <div>
                 <h4>Date Limit</h4>
-                <div class="btn-group" role="group">
-                    <input type="radio" class="btn-check" name="time-input" id="btn-daily" autocomplete="off" onclick="this.blur();" checked>
+                <div class="btn-group leaderboard-btn time-limit-btn" role="group">
+                    <input type="radio" class="btn-check" name="time-input" id="btn-daily" autocomplete="off" data-query="day" checked>
                     <label class="btn btn-outline-secondary" for="btn-daily">Daily</label>
 
-                    <input type="radio" class="btn-check" name="time-input" id="btn-weekly" onclick="this.blur();" autocomplete="off">
+                    <input type="radio" class="btn-check" name="time-input" id="btn-weekly" autocomplete="off" data-query="week" value="week">
                     <label class="btn btn-outline-secondary" for="btn-weekly">Weekly</label>
 
-                    <input type="radio" class="btn-check" name="time-input" id="btn-monthly" onclick="this.blur();" autocomplete="off">
+                    <input type="radio" class="btn-check" name="time-input" id="btn-monthly" autocomplete="off" data-query="week">
                     <label class="btn btn-outline-secondary" for="btn-monthly">Monthly</label>
                 </div>
             </div>
@@ -80,21 +72,54 @@
 
 {% block javascript %}
 <script>
-let d = 0;
-    $(document).ready(function () {
+
+    function replaceLeaderboard(newData) {
+        const tableBody = $("#leaderboard_body");
+        tableBody.empty();
+        newData.forEach((row, index) => {
+            const boardRow = $("<tr></tr>")
+                .append($("<td></td>").append(index))
+                .append($("<td></td>").append(row.username))
+                .append($("<td></td>").append(row.score));
+
+            tableBody.append(boardRow);
+        });
+    }
+
+    async function getLeaderboardData() {
+        $(".leaderboard-btn .btn").addClass("disabled");
+
         $.ajax({
-            url: 'ajax/leaderboardGet/',
+            url: 'ajax/get/',
+            timeout: 5000,
+            async: false,
             data: {
-                'timeLimit': 'day',
-                'boardType': 'M'
+                'timeLimit': getTimeLimit(),
+                'boardType': getBoardType()
             },
             dataType: 'json',
-            success: function (data) {
-
-                console.log(data);
-                d = data;
+            success: async function (data) {
+                replaceLeaderboard(data);
+                $(".leaderboard-btn .btn").removeClass("disabled");
+            },
+            fail: function (xhr, testStatus, errorThrown) {
+                console.log("Failed");
             }
         });
-    })
+    }
+
+    function getTimeLimit() {
+        return $(".time-limit-btn .btn-check:checked").data("query")
+    }
+
+    function getBoardType() {
+        return $(".board-type-btn .btn-check:checked").data("query")
+    }
+
+    $(document).ready(function () {
+        getLeaderboardData();
+        $(".leaderboard-btn").click(() => getLeaderboardData());
+    });
+
 </script>
 {% endblock %}

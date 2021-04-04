@@ -83,7 +83,7 @@ def addBoards(grid,solution,difficulty):
     return b
 
 def addGame(b, username, score, date):
-    g = Game.objects.get_or_create(board=b)
+    g = Game.objects.get_or_create(board=b[0].id)
     g.user = username
     g.score = score
     g.date =date

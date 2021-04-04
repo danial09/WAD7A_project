@@ -141,7 +141,14 @@ def ajax_leaderboard(request):
     else:
         time -= relativedelta(months=1)
 
-    queryset = Game.objects.filter(submissionDate__gt=time).filter(board__difficulty=board_type).order_by("-score")[:10]
+    queryset = Game.objects.filter(submissionDate__gt=time)
+
+    if board_type != "DC":
+        queryset = queryset.filter(board__difficulty=board_type)
+    else:
+        queryset = queryset.filter(board__postedDate__isnull=False)
+
+    queryset = queryset.order_by("-score")[:10]
 
     data = [{'username': game.user.username, 'score': game.score} for game in queryset]
 

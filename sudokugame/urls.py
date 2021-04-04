@@ -1,5 +1,6 @@
 from django.urls import path
 from sudokugame import views
+from django.urls import reverse
 
 app_name = "sudokugame"
 
@@ -13,4 +14,5 @@ urlpatterns = [
     path('profile/', views.profile_page, name='profilepage'),
     path('help/', views.help_page, name='help'),
     path('practice/', views.practice, name='practice'),
+    path('leaderboard/ajax/get/', views.ajax_leaderboard),
 ]

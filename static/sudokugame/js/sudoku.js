@@ -18,6 +18,9 @@ class Sudoku {
             this.focusCell($(target.target).closest(".game-cell"));
         });
 
+        Sudoku.setHint(3);
+        Sudoku.setLives(3);
+
         $("body").keydown((event) => {
             if (event.key.toLowerCase() === 'n') {
                 $("#btn-notes").click();
@@ -39,7 +42,7 @@ class Sudoku {
         $("#btn-solve").click(() => {
             let solution = null;
             let sudoku = this;
-            console.log(this.solutionBoard === null)
+
             if (this.solutionBoard !== null) {
                 solution = this.solutionBoard;
             } else {
@@ -54,7 +57,32 @@ class Sudoku {
                 })
             }
             this.fillBoard(solution)
-        })
+        });
+
+        $("#btn-hint").click(() => {
+            if (this.focusedCell === null || $(this.focusedCell).hasClass("fixed-cell") || this.hints <= 0) return;
+            const focusedCell = this.focusedCell;
+            let hints = this.hints;
+
+            $.ajax({
+                url: 'ajax/hint/',
+                async: false,
+                data: {
+                    'row': $(focusedCell).parent().index(),
+                    'col': $(focusedCell).index()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data === '0') return;
+                    $(focusedCell).addClass("fixed-cell");
+                    $(focusedCell).find(".cell-value").html(data.value);
+                    hints -= 1;
+                }
+            });
+
+            this.hints = hints;
+            Sudoku.setHint(hints);
+        });
 
         this.startTime();
     }
@@ -174,6 +202,14 @@ class Sudoku {
             });
             sudokuBoard.append(tableRow);
         });
+    }
+
+    static setHint(hint) {
+        $("#game-hints p").html(hint === Infinity ? "&infin;" : hint);
+    }
+
+    static setLives(lives) {
+        $("#game-lives p").html(lives === Infinity ? "&infin;" : lives);
     }
 
     static mod(n, m) {

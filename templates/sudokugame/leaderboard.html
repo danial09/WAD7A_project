@@ -6,46 +6,74 @@
 {% endblock %}
 
 {% block body_block%}
-{% if user.is_authenticated %}
-    <h1>Welcome to Leaderboards {{ user.username }}</h1>
-{% else %}
-    <h1>Leaderboards</h1>
-{% endif %}
+<main class="container-fluid pb-3 col-10">
 
-<div class ="dynamic table"
-<div class="table">
- <table class = "Leaderboard-table" style= "border: 1px solid black; width: 500px;"> 
-    <thead>
-    <tr>
-        <th>Rank</th>
-        <th> Username </th>
-        <th> Score </th>
-    <tr>
-    </thead>   
-    <tbody>
-    
-    {% for easyData in Easygamelist %}
-        <td> {{forloop.counter}}</td>
-        <td> {{easyData.user.username}}</td>
-        <td> {{easeData.score}}</td>   
-    
-    {% empty %}
-        <td> 1</td>
-        <td> test123</td>
-        <td> 500</td>
-        
-      {% endfor %}  
-    </tbody> 
-    </table>
+    <div class="text-center m-5">
+        {% if user.is_authenticated %}
+            <h1>Welcome to Leaderboards {{ user.username }}</h1>
+        {% else %}
+            <h1>Leaderboards</h1>
+        {% endif %}
     </div>
- </div>   
 
-<button class="btn btn-outline-dark" type="button" value ="E">Easy</button>
-<button class="btn btn-outline-dark" type="button" value = "M">Medium</button>
-<button class="btn btn-outline-dark" type="button" value ="H">Hard</button>
-{% if user.is_authenticated %}
-    <button class="btn btn-outline-dark" type="button" value ="">Daily Challenge</button>
-{% endif %}
+    <div class="d-grid gap-3" style="grid-template-columns: 1fr 0.5fr;">
+        <div>
+            <table class = "table text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th>Rank</th>
+                    <th>Username</th>
+                    <th>Score</th>
+                <tr>
+                </thead>
+                <tbody>
 
-    {% endblock%}
+                {% for queryData in Mediumgamelist %}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td> {{queryData.user.username}}</td>
+                        <td> {{queryData.score}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+        </div>
+        <div class="d-grid gap-5 mx-auto text-center border border-dark rounded-1 p-3">
+            <div>
+                <h4 class="p-1"> Board</h4>
+                <div class="d-grid">
+                    <div class="btn-group " role="group">
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-easy" autocomplete="off" onclick="this.blur();">
+                        <label class="btn btn-outline-success" for="btn-easy">Easy</label>
 
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-medium" onclick="this.blur();" autocomplete="off" checked>
+                        <label class="btn btn-outline-warning" for="btn-medium">Medium</label>
+
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-hard" onclick="this.blur();" autocomplete="off">
+                        <label class="btn btn-outline-danger" for="btn-hard">Hard</label>
+
+                        <input type="radio" class="btn-check" name="difficulty-input" id="btn-challenge" onclick="this.blur();" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btn-challenge">Daily Challenge</label>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4>Date Limit</h4>
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="time-input" id="btn-daily" autocomplete="off" onclick="this.blur();" checked>
+                    <label class="btn btn-outline-secondary" for="btn-daily">Daily</label>
+
+                    <input type="radio" class="btn-check" name="time-input" id="btn-weekly" onclick="this.blur();" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btn-weekly">Weekly</label>
+
+                    <input type="radio" class="btn-check" name="time-input" id="btn-monthly" onclick="this.blur();" autocomplete="off">
+                    <label class="btn btn-outline-secondary" for="btn-monthly">Monthly</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+{% endblock%}

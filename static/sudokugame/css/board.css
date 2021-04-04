@@ -34,10 +34,10 @@
     display: block;
 }
 
-.game-cell:hover {
+.game-cell:not(.no-hover):hover {
     cursor: pointer;
     overflow: hidden;
-    background-color: rgba(67, 226, 200, 0.4);
+    background-color: rgba(47, 197, 172, 0.4);
 }
 
 .game-cell:nth-child(3), .game-cell:nth-child(6) {
@@ -66,7 +66,7 @@
 }
 
 .correct-cell {
-    color: lawngreen;
+    color: rgb(2, 209, 19);
 }
 
 .wrong-cell {
@@ -76,24 +76,24 @@
 /* Based on @T30's answer: https://stackoverflow.com/questions/11997032/how-to-get-box-shadow-on-left-right-sides-only */
 
 .related-col-cell {
-    box-shadow: inset -6px 0 6px -6px #6495ED, inset 6px 0 6px -6px #6495ED;
+    box-shadow: inset -6px 0 6px -6px #64c2ed, inset 6px 0 6px -6px #64c2ed;
 }
 
 .related-row-cell {
-    box-shadow: inset 0 -6px 6px -6px #6495ED, inset 0 6px 6px -6px #6495ED;
+    box-shadow: inset 0 -6px 6px -6px #64c2ed, inset 0 6px 6px -6px #64c2ed;
 }
 
 .related-grid-cell {
-    background-color: rgba(65, 105, 225, 0.2);
+    background-color: rgba(65, 161, 225, 0.2);
 }
 
 .related-num-cell {
-    background-color: rgba(0,116,217, 0.4);
+    background-color: rgba(0, 148, 217, 0.4);
     color: white;
 }
 
 #focused-cell {
-    background-color: rgba(65, 105, 225, 0.8);
+    background-color: rgba(64, 180, 216, 0.8);
     color: white;
 }
 

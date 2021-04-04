@@ -101,9 +101,6 @@
             success: async function (data) {
                 replaceLeaderboard(data);
                 $(".leaderboard-btn .btn").removeClass("disabled");
-            },
-            fail: function (xhr, testStatus, errorThrown) {
-                console.log("Failed");
             }
         });
     }

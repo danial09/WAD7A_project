@@ -51,3 +51,10 @@ class Game(models.Model):
 
     def __str__(self):
         return f"Game: {self.user} played {self.board} @ {self.submissionDate}"
+
+
+# Make email a required field.
+# Solution from https://stackoverflow.com/questions/49134831/django-make-user-email-required
+User._meta.get_field('email')._unique = True
+User._meta.get_field('email').blank = False
+User._meta.get_field('email').null = False

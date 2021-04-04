@@ -39,13 +39,19 @@ def create_board(request):
     difficulty = request.GET.get('difficulty', 'M')
     # Sanity check to make sure difficulty passed does in fact exist.
     difficulty = difficulty if difficulty in difficulties else 'M'
+
     grid, solution = get_flattened_info(generate(difficulty))
     return Board.objects.get_or_create(grid=grid, solution=solution, difficulty=difficulty)[0]
+
 
 
 def play(request):
     board = create_board(request)
     request.session['board'] = board.grid
+    request.session['start_time'] = datetime.now().strftime("%H:%M:%S") 
+    request.session['lives'] = 3
+    request.session['hints'] = 3
+
     request.session['start_time'] = datetime.now().strftime("%H:%M:%S") 
     request.session['lives'] = 3
     request.session['hints'] = 3

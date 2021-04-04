@@ -1,10 +1,11 @@
 class Sudoku {
-    constructor(lives, hints) {
+    constructor(lives, hints, solutionBoard = null) {
         this.focusedCell = null;
         this.focusedValue = null;
         this.focusedNotes = null;
         this.timeID = null;
         this.timeElapsed = 0;
+        this.solutionBoard = solutionBoard
         this.timeElement = $("#game-time p");
         this.lives = lives;
         this.livesElement = $("#game-lives p");
@@ -34,6 +35,26 @@ class Sudoku {
                 this.cellInput(event.key);
             }
         });
+
+        $("#btn-solve").click(() => {
+            let solution = null;
+            let sudoku = this;
+            console.log(this.solutionBoard === null)
+            if (this.solutionBoard !== null) {
+                solution = this.solutionBoard;
+            } else {
+                $.ajax({
+                    url: 'ajax/solve/',
+                    async: false,
+                    dataType: 'json',
+                    success: function (data) {
+                        const solution_str = data.solution;
+                        solution = Sudoku.unflattenBoard(solution_str)
+                    }
+                })
+            }
+            this.fillBoard(solution)
+        })
 
         this.startTime();
     }
@@ -138,8 +159,38 @@ class Sudoku {
         }
     }
 
+
+    fillBoard(board) {
+        const sudokuBoard = $("#game-board");
+        sudokuBoard.empty();
+        board.forEach(row => {
+            const tableRow = $("<tr></tr>").addClass("game-row");
+            row.forEach(cell => {
+                tableRow.append(
+                    $("<td></td>")
+                        .addClass("game-cell fixed-cell")
+                        .append($("<div></div>").addClass("cell-value").append(cell))
+                );
+            });
+            sudokuBoard.append(tableRow);
+        });
+    }
+
     static mod(n, m) {
         // Helper function to only get the positive mod result.
         return ((n % m) + m) % m;
     }
+
+    static unflattenBoard(boardStr) {
+    let board = []
+        for (let i = 0; i < 9; i++) {
+            let row = []
+            for (let j = 0; j < 9; j++) {
+                row.push(boardStr[9*i+j]);
+            }
+            board.push(row);
+        }
+        return board;
+    }
+
 }

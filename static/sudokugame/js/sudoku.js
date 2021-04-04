@@ -18,7 +18,11 @@ class Sudoku {
         });
 
         $("body").keydown((event) => {
-            if (event.key.startsWith("Arrow")) {
+            if (event.key.toLowerCase() === 'n') {
+                $("#btn-notes").click();
+            } else if (event.key.toLowerCase() === 'i') {
+                $("#btn-input").click();
+            } else if (event.key.startsWith("Arrow")) {
                 this.cellChangeFocus(event.key);
 
             } else if ((event.key === 'Delete' || event.key === 'Backspace' || event.key === '0') &&

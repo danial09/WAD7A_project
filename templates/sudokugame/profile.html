@@ -29,7 +29,7 @@
             <tr>
                 <td><a href="{% url 'sudokugame:play' %}?id={{ game.board.id }}">Game</a></td>
                 <td>{{game.score}}</td>
-                {% if game.board.difficulty %}
+                {% if game.board.is_normal_board %}
                     <td>{{game.board.get_difficulty_display}}</td>
                 {% else %}
                     <td>Daily Challenge</td>

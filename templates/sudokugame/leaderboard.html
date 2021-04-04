@@ -8,12 +8,15 @@
 {% block body_block%}
 <main class="container-fluid pb-3 col-10">
 
-    <div class="text-center m-5">
+    <div class="text-center m-5" id="difficultyIndicator">
         {% if user.is_authenticated %}
             <h1>Welcome to Leaderboards {{ user.username }}</h1>
         {% else %}
             <h1>Leaderboards</h1>
         {% endif %}
+    </div>
+
+    <div id="dI">
     </div>
 
     <div class="d-grid gap-3" style="grid-template-columns: 1fr 0.5fr;">
@@ -75,7 +78,7 @@
         tableBody.empty();
         newData.forEach((row, index) => {
             const boardRow = $("<tr></tr>")
-                .append($("<td></td>").append(index))
+                .append($("<td></td>").append(index+1))
                 .append($("<td></td>").append(row.username))
                 .append($("<td></td>").append(row.score));
 
@@ -85,7 +88,6 @@
 
     async function getLeaderboardData() {
         $(".leaderboard-btn .btn").addClass("disabled");
-
         $.ajax({
             url: 'ajax/get/',
             timeout: 5000,

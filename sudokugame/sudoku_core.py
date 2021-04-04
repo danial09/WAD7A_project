@@ -14,21 +14,17 @@ difficulties = {
 }
 
 
-def generate(difficulty):
+def generate(difficulty, seed=None):
     """
     Generate a sudoku board.
     :param difficulty: The key from the difficulties dictionary specifying the difficulty wanted.
+    :param seed: The seed to use to generate the board, leave empty for random seed.
     """
-
+    if seed is None:
+      seed = randrange(sys.maxsize)
+  
     difficulty_value = difficulties[difficulty]['value']
-    return Sudoku(3, 3, seed=randrange(sys.maxsize)).difficulty(difficulty_value)
-
-# Method overloading
-# Used by populate.py script using fixed seed value
-def generate(difficulty,seed):
-    
-    difficulty_value =  difficulties[difficulty]['value']
-    return Sudoku(3,3, seed = seed)   
+    return Sudoku(3, 3, seed=seed).difficulty(difficulty_value) 
 
 
 def solve(board):

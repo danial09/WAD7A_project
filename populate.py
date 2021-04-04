@@ -45,28 +45,30 @@ def populate():
         'email' : 'testusername10@test.com',
         'score' : 1000},
     ]
-    eboard = generate('E',10)
-    mboard = generate('M',10)
-    hboard =generate('H',10)
 
-    boards = [{'grid': flatten_join(eboard),
-                'solution': flatten_join(solve(eboard)),
-                'diffiulty': 'E'},
-                {'grid': flatten_join(hboard),
-                'solution': flatten_join(solve(hboard)),
-                'difficulty': 'H'},
-                {'grid': flatten_join(mboard),
-                'solution': flatten_join(solve(mboard)),
-                'difficulty': 'M'}
-                ]
+    difficultiesC ='EMH'
+    boards=[]
+
+    for x in difficultiesC:
+        board_base = generate(x,10)
+        board = board_base.board
+        solution = board_base.solve().board
+
+        flattened_board = flatten_join(board)
+        flattened_solution = flatten_join(solution)
+
+        boardDict = {'grid': flattened_board,
+                'solution': flattened_solution,
+                'difficulty': x}
+        boards.append(boardDict)
 
     date = datetime.date(2021,4,4)
     
     # add games
-    for boardData in boards.itens():
-        b = addBoards(boardData.get('grid'), boardData.get('solution'), boardData.get('difficulty'))
-        for userData in user.items():
-            g = addGame(userData.get('username'), b['id'],b['difficulty'],userData.get('score'),date)
+    for boardData in boards:
+        b = addBoards(boardData['grid'], boardData['solution'], boardData['difficulty'])
+        for userData in users:
+            addGame(b, userData['username'],userData['score'],date)
 
     # print out the games we have added
     for b in Board.objects.all():
@@ -77,11 +79,14 @@ def populate():
 # Function to add boards of different boards to the model
 def addBoards(grid,solution,difficulty):
     b = Board.objects.get_or_create(grid = grid, solution = solution, difficulty = difficulty)
-    b.save()
+    b[0].save()
     return b
 
-def addGame(username, id, difficulty, score, date):
-    g = Game.objects.get_or_create(username, id, difficulty, score, date)
+def addGame(b, username, score, date):
+    g = Game.objects.get_or_create(board=b)
+    g.user = username
+    g.score = score
+    g.date =date
     g.save()
     return g
 

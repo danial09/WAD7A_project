@@ -2,10 +2,12 @@ import sys
 
 from random import randrange
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -126,3 +128,22 @@ def help_page(request):
 
 def practice(request):
     return render(request, "sudokugame/practice.html")
+
+
+def ajax_leaderboard(request):
+    time = timezone.now()
+    time_limit = request.GET.get("timeLimit", 'month')
+    board_type = request.GET.get("boardType", 'M')
+    if time_limit == 'day':
+        time -= relativedelta(days=1)
+    elif time_limit == 'week':
+        time -= relativedelta(weeks=1)
+    else:
+        time -= relativedelta(months=1)
+
+    queryset = Game.objects.filter(submissionDate__gt=time).filter(board__difficulty=board_type).order_by("-score")[:10]
+
+    data = [{'username': game.user.username, 'score': game.score} for game in queryset]
+
+    response = JsonResponse(data, safe=False)
+    return response

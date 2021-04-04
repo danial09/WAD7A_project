@@ -32,7 +32,7 @@ SECRET_KEY = '=8*d*b_$#0^*wy@3(ss^*dyzfxvt_xss5zo0azxue9(u7)k!0y'
 DEBUG = True
 
 # might have to remove 127.0.0.1 after deployment
-ALLOWED_HOSTS = ['wad7a_project.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition

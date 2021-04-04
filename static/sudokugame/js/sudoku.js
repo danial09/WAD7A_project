@@ -18,8 +18,8 @@ class Sudoku {
             this.focusCell($(target.target).closest(".game-cell"));
         });
 
-        Sudoku.setHint(3);
-        Sudoku.setLives(3);
+        Sudoku.setHint(this.hints);
+        Sudoku.setLives(this.lives);
 
         $("body").keydown((event) => {
             if (event.key.toLowerCase() === 'n') {
@@ -28,7 +28,10 @@ class Sudoku {
                 $("#btn-input").click();
             } else if (event.key.startsWith("Arrow")) {
                 this.cellChangeFocus(event.key);
-
+            } else if (event.key.toLowerCase() === 'h') {
+                $("#btn-hint").click();
+            } else if (event.key.toLowerCase() === 's') {
+                $("#btn-solve").click();
             } else if ((event.key === 'Delete' || event.key === 'Backspace' || event.key === '0') &&
                     !$(this.focusedCell).hasClass("fixed-cell")) {
 
@@ -41,7 +44,6 @@ class Sudoku {
 
         $("#btn-solve").click(() => {
             let solution = null;
-            let sudoku = this;
 
             if (this.solutionBoard !== null) {
                 solution = this.solutionBoard;
@@ -57,31 +59,39 @@ class Sudoku {
                 })
             }
             this.fillBoard(solution)
+            this.stopTime();
         });
 
         $("#btn-hint").click(() => {
             if (this.focusedCell === null || $(this.focusedCell).hasClass("fixed-cell") || this.hints <= 0) return;
-            const focusedCell = this.focusedCell;
-            let hints = this.hints;
+            const row = $(this.focusedCell).parent().index();
+            const col = $(this.focusedCell).index();
+            let value = null;
 
-            $.ajax({
-                url: 'ajax/hint/',
-                async: false,
-                data: {
-                    'row': $(focusedCell).parent().index(),
-                    'col': $(focusedCell).index()
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data === '0') return;
-                    $(focusedCell).addClass("fixed-cell");
-                    $(focusedCell).find(".cell-value").html(data.value);
-                    hints -= 1;
-                }
-            });
+            if (this.solutionBoard !== null)
+            {
+                value = this.solutionBoard[row][col];
+            } else {
+                $.ajax({
+                    url: 'ajax/hint/',
+                    async: false,
+                    data: {
+                        'row': row,
+                        'col': col
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        value = data.value;
+                    }
+                });
+            }
+            if (value === '0') return;
+            $(this.focusedCell)
+                .addClass("fixed-cell")
+                .find(".cell-value").html(value);
 
-            this.hints = hints;
-            Sudoku.setHint(hints);
+            this.hints--;
+            Sudoku.setHint(this.hints);
         });
 
         this.startTime();

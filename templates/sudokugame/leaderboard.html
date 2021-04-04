@@ -86,7 +86,7 @@
         });
     }
 
-    async function getLeaderboardData() {
+    function getLeaderboardData() {
         $(".leaderboard-btn .btn").addClass("disabled");
         $.ajax({
             url: 'ajax/get/',
@@ -97,7 +97,7 @@
                 'boardType': getBoardType()
             },
             dataType: 'json',
-            success: async function (data) {
+            success: function (data) {
                 replaceLeaderboard(data);
                 $(".leaderboard-btn .btn").removeClass("disabled");
             }

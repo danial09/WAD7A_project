@@ -41,9 +41,7 @@
 </div>
 {% endblock %}
 
-{% block body_block %}
-    {{ block.super }}
-
+{% block javascript %}
     <script src="{% static 'sudokugame/js/sudoku.js' %}"></script>
     <script>
         $(document).ready(function() {
@@ -51,5 +49,4 @@
             game.start();
         })
     </script>
-
 {% endblock %}

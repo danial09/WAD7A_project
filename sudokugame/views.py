@@ -166,14 +166,25 @@ def practice(request):
     return render(request, "sudokugame/practice.html")
 
 def ajax_solve(request):
-    print("Hello")
     solution = request.session['solution']
     stop_game(request)
 
-    response = JsonResponse({'solution': solution})
-    print(response)
-    return response
+    return JsonResponse({'solution': solution})
 
+
+def ajax_hint(request):
+    if request.session['hints'] > 0:
+        row = request.GET.get('row')
+        col = request.GET.get('col')
+
+        solution = request.session['solution']
+        value = solution[9*int(row) + int(col)]
+
+        request.session['hints'] -= 1
+    else:
+        value = 0
+    print("Test" + value)
+    return JsonResponse({'value': value})
 
 def ajax_leaderboard(request):
     time = timezone.now()

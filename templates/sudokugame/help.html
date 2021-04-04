@@ -1,45 +1,45 @@
+{% extends 'sudokugame/base.html' %}
+
 {% load static %}
+{% load sudoku_template_tags %}
 
 {% block title_block %}
     Help
 {% endblock %}
 
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/css/board.css' %}">
+    <style>
+        {#  Overwrite default font size to display board properly  #}
+        .cell-value { font-size: 1rem; }
+    </style>
+{% endblock %}
+
 {% block body_block %}
 
-    <div>
-        <h2>How to play Suduko</h2>
+<main class="container-fluid pb-3 col-8">
+    <h2>How to play Suduko</h2>
+    <h4>Board layout</h4>
+    <p>A sudoku board consists of a 9 x 9 grid of squares. The grid is further sub-divided into 3 x 3 sub-grids. Some of the squares will be filled with digits. The objective is to fill in the remaining squares with the digits 1-9.</p>
+    <div style="min-width: 240px;" class="text-center mx-auto col-2">
+        {% get_board example_board "no-hover" %}
+        <p>Here's a typical sudoku board</p>
     </div>
-
-    <div>
-        <p> Suduku definition from: </p> <a href=https://sudoku.com/how-to-play/sudoku-rules-for-complete-beginners/#:~:text=Sudoku%20is%20played%20on%20a,the%20row%2C%20column%20or%20square.></a>
-        <p> 
-            Sudoku is played on a grid of 9 x 9 spaces. Within the rows and columns are 9 “squares” (made up of 3 x 3 spaces). Each row, column and square (9 spaces each) needs to be filled out with the numbers 1-9, without repeating any numbers within the row, column or square. Does it sound complicated? As you can see from the image below of an actual Sudoku grid, each Sudoku grid comes with a few spaces already filled in; the more spaces filled in, the easier the game – the more difficult Sudoku puzzles have very few spaces that are already filled in.
-
-            Sudoku Rule № 2: Don’t Repeat Any Numbers
-
-            Sudoku Rule № 3: Don’t Guess
-            Sudoku is a game of logic and reasoning, so you shouldn’t have to guess. If you don’t know what number to put in a certain space, keep scanning the other areas of the grid until you seen an opportunity to place a number. But don’t try to “force” anything – Sudoku rewards patience, insights, and recognition of patterns, not blind luck or guessing.
-
-            Sudoku rules are relatively uncomplicated – but the game is infinitely varied, with millions of possible number combinations and a wide range of levels of difficulty. But it’s all based on the simple principles of using numbers 1-9, filling in the blank spaces based on deductive reasoning, and never repeating any numbers within each square, row or column.
-        </p>
-    </div>
-
-    <div>
-        <h2>How use the board</h2>
-    </div>
-
-    <div>
-        <p>
-            Click on a square or navigate around with your arrow keys.  Once you have highlighted the square that you want to fill in you can type on your keyboard the number you wish to enter. If you are not sure on your answer you are able to switch to notes to pencil an answer in by clicking the ‘notes’ button on the left-hand side. You can remove a number from the notes by typing it again. You can switch back to ‘input’ when you an answer you want to input. 
-            
-            You can see how long you have been playing from the counter underneath the ‘Time’ header. If you get stuck there are also three hints available – they can be accessed by pressing the hints button on the left. You will be able to see how many hints you have left from the counter on the left. 
-           
-            Watch out! If you input a wrong answer you will lose a life, you have three lives per game. 
-
-            If you want a more relaxed experience, why not try out a ‘Practice Game’? Here you are able to play without being timed, and you have infinite lives and hints!  
-           
-            Enjoy!
-        </p>
-    </div>
-
+    <h4>Don't repeat numbers</h4>
+    <p>When filling in the squares, you cannot repeat any numbers in the rows, column or sib-grids</p>
+    <h4>Don't guess</h4>
+    <p>Sudoku is a logic-based puzzle game. If you are unsure on what number to put in a square, then scan around the grid until you see a pattern.</p>
+    <br>
+    <h2>Using the interactive sudoku board</h2>
+    <h4>Navigation</h4>
+    <p>Click on a square or navigate around with your arrow keys. Once you have highlighted the square that you want to fill in you can type on your keyboard the number you wish to enter. You can clear a square by entering 0, backspace or delete.</p>
+    <h4>Notes mode</h4>
+    <p>If you are not sure on your answer you are able to switch to notes to pencil an answer in by clicking the ‘notes’ button on the left-hand side. You can remove a number from the notes by typing it again. You can switch back to ‘input’ when you an answer you want to input. You can switch back to ‘input’ when you an answer you want to input.</p>
+    <h4>Hints and Lives</h4>
+    <p>In each game, you are given 3 hints and lives. A hint will automatically fill in a cell.</p>
+    <p>Watch out! If you input a wrong answer you will lose a life, it will be game over if you lose all lives.</p>
+    <h4>Practice mode</h4>
+    <p>If you want a more relaxed experience, why not try out a ‘Practice Game’? Here you are able to play without being timed, and you have infinite lives and hints! Click <a href="{% url 'sudokugame:practice' %}">Here</a> to try it out!</p>
+    <p>Enjoy!</p>
+</main>
 {% endblock %}

@@ -76,3 +76,12 @@ def unflatten_split(board_str, cast_fcn=int, zero_replace=None):
     Inverse of flatten_join()
     """
     return unflatten([c for c in board_str], cast_fcn, zero_replace)
+
+
+def get_flattened_info(board):
+    """
+    Return the flattened board as well as the flattened solution of the given sudoku board
+    :param board: The board to get the flattened info of.
+    :return: A 2-tuple containing the flattened board and the flattened solution respecticely.
+    """
+    return flatten_join(board.board), flatten_join(board.solve().board)

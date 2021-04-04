@@ -34,7 +34,7 @@
     display: block;
 }
 
-.game-cell:hover {
+.game-cell:not(.no-hover):hover {
     cursor: pointer;
     overflow: hidden;
     background-color: rgba(47, 197, 172, 0.4);

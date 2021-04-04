@@ -8,15 +8,27 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 
 from sudokugame.forms import UserForm
 from sudokugame.models import Game, Board
 
-from sudokugame.sudoku_core import generate, flatten_join, difficulties
+from sudokugame.sudoku_core import generate, flatten_join, difficulties, get_flattened_info
 
 
 def home(request):
     return render(request, 'sudokugame/home.html')
+
+
+def create_daily_challenge():
+    board_check = Board.objects.filter(postedDate=timezone.now().date())
+    if bool(board_check):
+        return board_check[0]
+
+    grid, solution = get_flattened_info(generate('M'))
+    board = Board(grid=grid, solution=solution, postedDate=timezone.now().date())
+    board.save()
+    return board
 
 
 def create_board(request):
@@ -27,26 +39,18 @@ def create_board(request):
     difficulty = request.GET.get('difficulty', 'M')
     # Sanity check to make sure difficulty passed does in fact exist.
     difficulty = difficulty if difficulty in difficulties else 'M'
-    board_base = generate(difficulty)
-    board = board_base.board
-    solution = board_base.solve().board
 
-    flattened_board = flatten_join(board)
-    flattened_solution = flatten_join(solution)
+    grid, solution = get_flattened_info(generate(difficulty))
+    return Board.objects.get_or_create(grid=grid, solution=solution, difficulty=difficulty)[0]
 
-    request.session['board'] = flattened_board
-
-    board = Board.objects.filter(grid=flattened_board)
-    if bool(board):
-        return board[0]
-    else:
-        board = Board(grid=flattened_board, solution=flattened_solution, difficulty=difficulty)
-        board.save()
-        return board
 
 
 def play(request):
     board = create_board(request)
+    request.session['board'] = board.grid
+    request.session['start_time'] = datetime.now().strftime("%H:%M:%S") 
+    request.session['lives'] = 3
+    request.session['hints'] = 3
 
     request.session['start_time'] = datetime.now().strftime("%H:%M:%S") 
     request.session['lives'] = 3
@@ -118,3 +122,13 @@ def leader_board(request):
     context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
 
     return render(request, "sudokugame/leaderboard.html", context)
+
+
+def help_page(request):
+    flattened_board = flatten_join(generate("M").board)
+    board = Board(grid=flattened_board)
+    return render(request, "sudokugame/help.html", context={"example_board": board})
+
+
+def practice(request):
+    return render(request, "sudokugame/practice.html")

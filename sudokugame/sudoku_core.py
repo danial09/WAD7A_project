@@ -5,6 +5,7 @@ This file provides multiple helper variables and methods for working with, gener
 import sys
 from random import randrange
 from sudoku import Sudoku
+from time import time
 
 # Difficulty value represents the fraction of cells that are empty
 difficulties = {
@@ -85,3 +86,18 @@ def get_flattened_info(board):
     :return: A 2-tuple containing the flattened board and the flattened solution respecticely.
     """
     return flatten_join(board.board), flatten_join(board.solve().board)
+
+
+def generate_score(start_time, hints, lives):
+    score = 50
+
+    time_taken = int((int(time()) - start_time) / 60)  # Time taken in minutes
+    score += max(15-time_taken, 0) * 20
+
+    if hints == 3:
+        score += 100
+
+    if lives == 3:
+        score += 100
+
+    return score

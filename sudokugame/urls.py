@@ -15,4 +15,5 @@ urlpatterns = [
     path('help/', views.help_page, name='help'),
     path('practice/', views.practice, name='practice'),
     path('leaderboard/ajax/get/', views.ajax_leaderboard),
+    path('play/ajax/solve/', views.ajax_solve)
 ]

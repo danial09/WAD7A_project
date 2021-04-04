@@ -118,3 +118,13 @@ def leader_board(request):
     context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
 
     return render(request, "sudokugame/leaderboard.html", context)
+
+
+def help_page(request):
+    flattened_board = flatten_join(generate("M").board)
+    board = Board(grid=flattened_board)
+    return render(request, "sudokugame/help.html", context={"example_board": board})
+
+
+def practice(request):
+    return render(request, "sudokugame/practice.html")

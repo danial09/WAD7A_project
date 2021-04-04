@@ -16,8 +16,8 @@
     </div>
 
     <div class="d-grid gap-3 d-md-flex justify-content-center">
-        <button class="btn btn-outline-dark" type="button">How to Play</button>
-        <button class="btn btn-outline-dark" type="button">Practice</button>
+        <a href="{% url 'sudokugame:help' %}" class="btn btn-outline-dark" type="button">How to Play</a>
+        <a href="{% url 'sudokugame:practice' %}" class="btn btn-outline-dark" type="button">Practice</a>
     </div>
 </div>
 {% endblock %}

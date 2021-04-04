@@ -10,6 +10,7 @@ from sudokugame.models import Board, Game
 from sudokugame.sudoku_core import generate, flatten_join, solve
 from django.utils import timezone
 from django.contrib.auth.models import User
+from dateutil.relativedelta import relativedelta
 
 
 def populate():
@@ -17,43 +18,64 @@ def populate():
 
     # Random username and scores
     users = [
-        {1011: {'username': 'TestUsername1',
+        {'username': 'TestUsername1',
          'email': 'testusername1@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {2600:{'username': 'TestUsername2',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername2',
          'email': 'testusername2@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {3300:{'username': 'TestUsername3',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername3',
          'email': 'testusername3@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {4300:{'username': 'TestUsername4',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername4',
          'email': 'testusername4@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {5600:{'username': 'TestUsername5',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername5',
          'email': 'testusername5@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {6040:{'username': 'TestUsername6',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername6',
          'email': 'testusername7@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {7600:{'username': 'TestUsername8',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername8',
          'email': 'testusername1@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-         {8500:{'username': 'TestUsername9',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+         {'username': 'TestUsername9',
          'email': 'testusername9@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'}},
-        {500:{'username': 'TestUsername10',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername10',
          'email': 'testusername10@test.com',
-         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'} },
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername11',
+         'email': 'testusername11@test.com',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername12',
+         'email': 'testusername12@test.com',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername13',
+         'email': 'testusername13@test.com',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername14',
+         'email': 'testusername14@test.com',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
+        {'username': 'TestUsername15',
+         'email': 'testusername15@test.com',
+         'password': 'TtEeSsTtPpAaSsWwOoRrDd123'},
     ]
-    # Create actual users
-    # save them
-    # user django.models to import user and use actual users instances to put in game object
+    scoreEasy = [1223, 1244, 4144, 5551, 1233, 54234, 554234, 12313, 41241, 2342, 1231, 4124, 74655, 100]
+    scoreMedium =[1223, 4124, 74655, 100, 41241, 554234, 1244,  2342, 1231, 1233, 54234, 4144, 5551, 12313,]
+    scoreHard = [4124, 74655, 100, 1223,  4144, 5551, 12313, 41241, 554234, 1244,  2342, 1231, 1233, 54234]
+    scoreDC = [1223,  554234, 4124,4144, 5551, 74655, 41241, 2342, 1231, 1233, 100,1244,  12313, 54234]
 
+    # different dates to test teh daily, weekly and monthly leaderboard
+    date = timezone.now()
+    dates = [date, date - relativedelta(days=1), date - relativedelta(weeks=1), date - relativedelta(months=1)]
     difficultiesC = 'EMH'
     boards = []
 
     for x in difficultiesC:
+
         board_base = generate(x, 10)
+
         board = board_base.board
         solution = board_base.solve().board
 
@@ -61,43 +83,77 @@ def populate():
         flattened_solution = flatten_join(solution)
 
         boardDict = {'grid': flattened_board,
-                     'solution': flattened_solution,
-                     'difficulty': x}
+                         'solution': flattened_solution,
+                         'difficulty': x}
+
+
         boards.append(boardDict)
 
-    # mdate = datetime.date(2021,4,4)
-    date = timezone.now()
+
+
+
 
     # Add the users into the model
     for userData in users:
-        for score, user in userData.items():
-            u = User.objects.get_or_create(username=user['username'], email=user['email'])[0]
-            u.password = user['password']
+            u = User.objects.get_or_create(username=userData['username'], email=userData['email'])[0]
+            u.password = userData['password']
             u.save()
             print(u)
 
-    # Add boards in to the model
+    # Add boards in to the model for easy, medium and hard difficulty
     for boardData in boards:
-        b = addBoards(boardData['grid'], boardData['solution'], boardData['difficulty'])
-        print (b)
-        for userData in users:
-            for score, user in userData.items():
-                username = User.objects.get_by_natural_key(user.get('username'))
-                g = addGame(b, username, score, date)
-                print(g)
+
+        b = addBoards(boardData['grid'], boardData['solution'], boardData['difficulty'], None)
+
+        print(b)
+        counter = 0
+        scoreCounter = 0
+
+        for user in users:
+            username = User.objects.get_by_natural_key(user.get('username'))
+
+            # The scores are added based on different difficulties.
+            if b.difficulty == 'M':
+                g = addGame(b, username, scoreMedium[scoreCounter], dates[counter])
+            elif b.difficulty == 'E':
+                g = addGame(b, username, scoreEasy[scoreCounter], dates[counter])
+            elif b.difficulty == 'H':
+                g = addGame(b, username, scoreHard[scoreCounter], dates[counter])
+
+            counter += 1
+            scoreCounter += 1
+            if counter > 3:
+                counter = 0
+            if scoreCounter > 13:
+                scoreCounter = 0
+            print(g)
 
 
-#
-#     # print out the games we have added
-#     for b in Board.objects.all():
-#         for g in Game.objects.filter(id=b['id']):
-#             print(f'- {b}: {g}')
-#
-#         # Function to add boards of different boards to the model
-#
-#
-def addBoards(grid, solution, difficulty):
-    b = Board.objects.get_or_create(grid=grid, solution=solution, difficulty=difficulty)[0]
+    # create new board for daily challenge
+    board_base = generate('M', 11)
+
+    board = board_base.board
+    solution = board_base.solve().board
+
+    flattened_board = flatten_join(board)
+    flattened_solution = flatten_join(solution)
+    b = addBoards(flattened_board, flattened_solution, None, date)
+    print(b)
+    for user in users:
+        username = User.objects.get_by_natural_key(user.get('username'))
+        g = addGame(b, username, scoreDC[scoreCounter], dates[counter])
+        scoreCounter +=1
+        counter+=1
+        if counter > 3:
+            counter = 0
+        if scoreCounter > 13:
+            scoreCounter = 0
+        print (g)
+
+
+
+def addBoards(grid, solution, difficulty, postedDate):
+    b = Board.objects.get_or_create(grid=grid, solution=solution, difficulty=difficulty,postedDate=postedDate )[0]
     b.save()
     return b
 

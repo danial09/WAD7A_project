@@ -4,9 +4,9 @@
     <tr class="game-row">
         {% for cell in row %}
             {% if cell == '0' %}
-                <td class="game-cell"><div class="cell-value"></div><div class="notes-grid"></div></td>
+                <td class="game-cell {{ cell_classes }}"><div class="cell-value"></div><div class="notes-grid"></div></td>
             {% else %}
-                <td class="game-cell fixed-cell"><div class="cell-value">{{ cell }}</div></td>
+                <td class="game-cell fixed-cell {{ cell_classes }}"><div class="cell-value">{{ cell }}</div></td>
             {% endif %}
         {% endfor %}
     </tr>

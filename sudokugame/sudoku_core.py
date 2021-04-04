@@ -23,6 +23,13 @@ def generate(difficulty):
     difficulty_value = difficulties[difficulty]['value']
     return Sudoku(3, 3, seed=randrange(sys.maxsize)).difficulty(difficulty_value)
 
+# Method overloading
+# Used by populate.py script using fixed seed value
+def generate(difficulty,seed):
+    
+    difficulty_value =  difficulties[difficulty]['value']
+    return Sudoku(3,3, seed = seed)   
+
 
 def solve(board):
     """

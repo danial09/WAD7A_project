@@ -1,5 +1,8 @@
 import sys
 
+from random import randrange
+from datetime import datetime
+
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -31,6 +34,8 @@ def create_board(request):
     flattened_board = flatten_join(board)
     flattened_solution = flatten_join(solution)
 
+    request.session['board'] = flattened_board
+
     board = Board.objects.filter(grid=flattened_board)
     if bool(board):
         return board[0]
@@ -42,6 +47,10 @@ def create_board(request):
 
 def play(request):
     board = create_board(request)
+
+    request.session['start_time'] = datetime.now().strftime("%H:%M:%S") 
+    request.session['lives'] = 3
+    request.session['hints'] = 3
 
     return render(request, 'sudokugame/play.html', context={'board': board})
 

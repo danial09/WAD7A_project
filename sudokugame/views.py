@@ -218,7 +218,7 @@ def ajax_leaderboard(request):
     if board_type != "DC":
         queryset = queryset.filter(board__difficulty=board_type)
     else:
-        queryset = queryset.filter(board__postedDate__isnull=False)
+        queryset = queryset.filter(board__postedDate=timezone.now().date())
 
     queryset = queryset.order_by("-score")[:10]
 

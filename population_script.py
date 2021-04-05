@@ -1,5 +1,7 @@
 import os
+
 import random
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WAD7A_project.settings')
 
@@ -8,6 +10,7 @@ import django
 django.setup()
 
 from sudokugame.models import Board, Game
+
 from sudokugame.sudoku_core import generate, flatten_join, solve, get_flattened_info, generate_score
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -88,6 +91,7 @@ def addGame(b, user, score, date):
     g.score = score
     g.submissionDate = date
     g.save()
+
 
     return g
 

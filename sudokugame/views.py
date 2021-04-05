@@ -175,7 +175,7 @@ def ajax_hint(request):
         request.session['hints'] -= 1
     else:
         value = 0
-    print("Test" + value)
+
     return JsonResponse({'value': value})
 
 

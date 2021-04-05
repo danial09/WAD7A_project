@@ -7,17 +7,6 @@
 
 {% block left_panel_block %}
 
-{#<h1>Well done!</h1>#}
-{#<h2>Your Score: 400</h2>#}
-{#<p>Base: 50</p>#}
-{#<p>Time Bonus: 40</p>#}
-{#<p>No lives lost: 100</p>#}
-{#<p>No hints used: 100</p>#}
-
-{#<div class="d-grid gap-2 col-8 mx-auto">#}
-{#    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#playModal">New Game</button>#}
-{#    <a href="{% url 'sudokugame:leaderboard' %}" class="btn btn-warning" type="button">Leaderboard</a>#}
-{#</div>#}
 {% if user.is_authenticated %}
     <h1>Welcome {{ user.username }}</h1>
 {% else %}

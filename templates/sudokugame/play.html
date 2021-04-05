@@ -7,11 +7,13 @@
 
 {% block left_panel_block %}
 
-{% if user.is_authenticated %}
-    <h1>Welcome {{ user.username }}</h1>
-{% else %}
-    <h1>Welcome</h1>
-{% endif %}
+{% block play_header %}
+    {% if user.is_authenticated %}
+        <h1>Welcome {{ user.username }}</h1>
+    {% else %}
+        <h1>Welcome</h1>
+    {% endif %}
+{% endblock %}
 
 <div class="d-grid gap-4 mx-auto">
     <div class="d-grid gap-2">
@@ -44,9 +46,9 @@
 {% block javascript %}
     <script src="{% static 'sudokugame/js/sudoku.js' %}"></script>
     <script>
-        $(document).ready(function() {
-            let game = new Sudoku(3, 3);
-            game.start();
-        })
+    $(document).ready(function() {
+        let game = new Sudoku(3, 3, undefined, '{{ board.get_board_type_str }}');
+        game.start();
+    })
     </script>
 {% endblock %}

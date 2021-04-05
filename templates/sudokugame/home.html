@@ -10,7 +10,7 @@
     <div class="d-grid gap-3 col-8 mx-auto">
         <button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#playModal">New Game</button>
         {% if user.is_authenticated %}
-            <button class="btn btn-success p-3" type="button">Daily Challenge</button>
+            <a href="{% url 'sudokugame:dailychallenge' %}" class="btn btn-success p-3" type="button">Daily Challenge</a>
         {% endif %}
         <a href="{% url 'sudokugame:leaderboard' %}" class="btn btn-warning p-3" type="button">Leaderboards</a>
     </div>

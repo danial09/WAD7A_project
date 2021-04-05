@@ -33,6 +33,9 @@ class Board(models.Model):
     def is_daily_challenge_board(self):
         return self.postedDate is not None
 
+    def get_board_type_str(self):
+        return self.difficulty if self.is_normal_board() else 'DC'
+
     def __str__(self):
         board_type = self.difficulty if self.difficulty else "Daily Challenge"
         return f"Sudoku Board #{self.id} ({board_type})"

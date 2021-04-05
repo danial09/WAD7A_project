@@ -14,8 +14,12 @@ urlpatterns = [
     path('profile/', views.profile_page, name='profilepage'),
     path('help/', views.help_page, name='help'),
     path('practice/', views.practice, name='practice'),
+    path('dailychallenge/', views.dailychallenge, name='dailychallenge'),
     path('leaderboard/ajax/get/', views.ajax_leaderboard),
     path('play/ajax/solve/', views.ajax_solve),
     path('play/ajax/hint/', views.ajax_hint),
     path('play/ajax/input/', views.ajax_input),
+    path('dailychallenge/ajax/solve/', views.ajax_solve),
+    path('dailychallenge/ajax/hint/', views.ajax_hint),
+    path('dailychallenge/ajax/input/', views.ajax_input),
 ]

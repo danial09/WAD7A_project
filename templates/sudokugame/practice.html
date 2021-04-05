@@ -1,5 +1,20 @@
-{% extends "sudokugame/base.html" %}
+{% extends "sudokugame/play.html" %}
+{% load static %}
 
-{% block body_block %}
-<h1>Not yet implemented</h1>
+{% block title_block %}
+Practice
+{% endblock %}
+
+{% block play_header %}
+<h1>Practice game</h1>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'sudokugame/js/sudoku.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            let game = new Sudoku(Infinity, Infinity, Sudoku.unflattenBoard('{{ board.solution }}'), 'practice');
+            game.start();
+        })
+    </script>
 {% endblock %}

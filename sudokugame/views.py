@@ -34,12 +34,7 @@ def create_daily_challenge():
     return board
 
 
-def create_board(request):
-    board_id = request.GET.get('id')
-    if board_id is not None:
-        return get_object_or_404(Board, pk=board_id)
-
-    difficulty = request.GET.get('difficulty', 'M')
+def create_board(difficulty):
     # Sanity check to make sure difficulty passed does in fact exist.
     difficulty = difficulty if difficulty in difficulties else 'M'
 
@@ -86,11 +81,21 @@ def stop_game(request):
 
 
 def play(request):
-    board = create_board(request)
+    board = create_board(request.GET.get("difficulty"))
     start_game(request, board)
 
     return render(request, 'sudokugame/play.html', context={'board': board})
 
+def practice(request):
+    board = create_board('M')
+    return render(request, 'sudokugame/practice.html', context={'board': board})
+
+
+def dailychallenge(request):
+    board = create_daily_challenge()
+    print(board.solution)
+    start_game(request, board)
+    return render(request, 'sudokugame/dailychallenge.html', context={'board': board})
 
 # Create a registration view
 def register(request):
@@ -153,9 +158,6 @@ def help_page(request):
     board = Board(grid=flattened_board)
     return render(request, "sudokugame/help.html", context={"example_board": board})
 
-
-def practice(request):
-    return render(request, "sudokugame/practice.html")
 
 def ajax_solve(request):
     solution = request.session['solution']

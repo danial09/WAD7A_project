@@ -1,5 +1,5 @@
 class Sudoku {
-    constructor(lives, hints, solutionBoard = null) {
+    constructor(lives, hints, solutionBoard = null, boardType) {
         this.focusedCell = null;
         this.focusedValue = null;
         this.focusedNotes = null;
@@ -9,6 +9,7 @@ class Sudoku {
         this.timeElement = $("#game-time p");
         this.lives = lives;
         this.hints = hints;
+        this.boardType = boardType;
     }
 
     start() {
@@ -285,14 +286,19 @@ class Sudoku {
     }
 
     generateFailurePage() {
-        $("#left-panel-wrapper")
+        const panel = $("#left-panel-wrapper")
             .empty()
-            .append($("<h1>Better Luck Next Time</h1>"))
-            .append(
-                $("<div class='d-grid gap-2 col-8 mx-auto'></div>")
-                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"))
-                    .append($("<a href=\"../leaderboard/\" class=\"btn btn-warning\" type=\"button\">Leaderboard</a>"))
-            )
+            .append($("<h1>Better Luck Next Time</h1>"));
+
+        const buttonDiv = $("<div class='d-grid gap-2 col-8 mx-auto'></div>");
+
+        if (this.boardType === 'DC') {
+            $(buttonDiv).append($("<button class=\"btn btn-primary\" type=\"button\" onclick='document.location.reload()'>Try Again</button>"))
+        } else {
+            $(buttonDiv).append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"));
+        }
+        $(buttonDiv).append($("<a href=\"../leaderboard/\" class=\"btn btn-warning\" type=\"button\">Leaderboard</a>"))
+        $(panel).append(buttonDiv);
     }
 
     fillBoard(board) {

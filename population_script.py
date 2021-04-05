@@ -22,8 +22,11 @@ def populate():
     # List of dictionaries containing data belonging to a model
 
     # Create 14 usernames to test with
-    users = [{'username': f'testusername{i}', 'email': f'testusername{i}@test.com', 'password': 'testPassword'} for i in
-             range(14)]
+
+    names = ['Yuh31Ku4ui', 'K0taM0r1n15h1', 'KenEnd0', 'Da1Tantan', 'BastianV1alJa1m3', 'T11tVunk', 'J1nC3',
+             'JanMr0z05k1', 'H1d3ak1J0', 'Jakub0ndr0us3k', 'Th0ma35nyd3r', 'RobertBab10n', 'Brank0C3raIc', 'JanaTyl0va']
+
+    users = [{'username': name, 'email': f'{name}@test.com', 'password': 'testPassword'} for name in names]
 
     # Add the users into the model
     users_list = []  # To store the created users to be used afterwards

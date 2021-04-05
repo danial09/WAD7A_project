@@ -9,10 +9,6 @@
 
 {% block head_block %}
     <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/css/board.css' %}">
-    <style>
-        {#  Overwrite default font size to display board properly  #}
-        .cell-value { font-size: 1rem; }
-    </style>
 {% endblock %}
 
 {% block body_block %}
@@ -21,8 +17,8 @@
     <h2>How to play Suduko</h2>
     <h4>Board layout</h4>
     <p>A sudoku board consists of a 9 x 9 grid of squares. The grid is further sub-divided into 3 x 3 sub-grids. Some of the squares will be filled with digits. The objective is to fill in the remaining squares with the digits 1-9.</p>
-    <div style="min-width: 240px;" class="text-center mx-auto col-2">
-        {% get_board example_board "no-hover" %}
+    <div style="min-width: 200px; width: 25%" class="text-center mx-auto col-2">
+        {% get_board example_board additional_cell_classes="no-hover" additional_board_classes="small-board" %}
         <p>Here's a typical sudoku board</p>
     </div>
     <h4>Don't repeat numbers</h4>

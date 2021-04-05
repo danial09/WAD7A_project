@@ -140,7 +140,7 @@ def user_logout(request):
 @login_required
 def profile_page(request):
     current_user = request.user
-    queryset = Game.objects.filter(user = current_user).order_by("-score")[:10]
+    queryset = Game.objects.filter(user=current_user).order_by("-score")[:5]
 
     return render(request, "sudokugame/profile.html", {'games': queryset})
 

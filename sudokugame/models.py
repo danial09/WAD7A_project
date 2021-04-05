@@ -10,7 +10,7 @@ class Board(models.Model):
     grid = models.CharField(max_length=81, unique=True)
     solution = models.CharField(max_length=81, unique=True)
     difficulty = models.CharField(max_length=1, null=True, choices=DIFFICULTY_CHOICES)
-    postedDate = models.DateField(null=True)
+    postedDate = models.DateField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         # Validate disjoint inheritance

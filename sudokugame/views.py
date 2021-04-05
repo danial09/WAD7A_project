@@ -205,6 +205,8 @@ def ajax_input(request, _):
     col = request.GET.get('col')
     val = request.GET.get('val')
 
+    return_json = {}
+
     solution = request.session['solution']
     solution_val = solution[9*int(row) + int(col)]
 
@@ -221,10 +223,11 @@ def ajax_input(request, _):
         if request.session['lives'] == 0:
             if 'board_id' in request.session:
                 add_failed_daily_challenge(request)
-
             stop_game(request)
+            return_json['solution'] = solution
 
-    return JsonResponse({"result": result})
+    return_json['result'] = result
+    return JsonResponse(return_json)
 
 def ajax_leaderboard(request):
     time = timezone.now()

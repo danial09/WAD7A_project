@@ -189,6 +189,7 @@ class Sudoku {
         let result = null;
         const row = $(this.focusedCell).parent().index();
         const col = $(this.focusedCell).index();
+        let solution = this.solutionBoard;
 
         if (this.solutionBoard !== null) {
             result = value === this.solutionBoard[row][col] ? "correct" : "incorrect";
@@ -204,6 +205,7 @@ class Sudoku {
                 dataType: 'json',
                 success: function (data) {
                     result = data.result;
+                    solution = Sudoku.unflattenBoard(data.solution);
                 }
             });
         }
@@ -223,7 +225,8 @@ class Sudoku {
             Sudoku.setLives(this.lives);
             if (this.lives === 0) {
                 this.stopGame();
-                this.generateFailurePage()
+                this.generateFailurePage();
+                this.fillBoard(solution);
             }
         }
     }

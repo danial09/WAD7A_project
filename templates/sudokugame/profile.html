@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 {% extends 'sudokugame/base.html' %}
 {% load static %}
+{% load sudoku_template_tags %}
 
 {% block title_block %}
 {{ user.username }} Profile
 {% endblock %}
 
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static 'sudokugame/css/board.css' %}">
+{% endblock %}
+
 {% block body_block %}
-    <h1> Welcome {{ user.username }}! </h1>
-    <style>
-        table, th, td {
-          border: 1px solid grey;
-          border-collapse: collapse;
-        }
-        th, td {
-          padding: 5px;
-          text-align: center;
-        }
-    </style>
-        <table class="center" style="width:50%">
+    <main class="container-fluid pb-3 col-8">
+        <h1 class="text-center"> Welcome {{ user.username }}! </h1>
+        <br><br>
+        <h4>Here are your best games</h4>
+        <table class="table table-bordered">
             <tr>
-                <th>Game</th>
-                <th>Score</th> 
-                <th>Difficulty</th>
                 <th>Date</th>
+                <th>Score</th>
+                <th>Difficulty</th>
+                <th>Game</th>
             </tr>
         {% for game in games%}
             <tr>
-                <td><a href="{% url 'sudokugame:play' %}?id={{ game.board.id }}">Game</a></td>
+                <td>{{game.submissionDate}}</td>
                 <td>{{game.score}}</td>
                 {% if game.board.is_normal_board %}
                     <td>{{game.board.get_difficulty_display}}</td>
                 {% else %}
                     <td>Daily Challenge</td>
                 {% endif %}
-                <td>{{game.submissionDate}}</td>
+                <td>{% get_board game.board additional_cell_classes="no-hover" additional_board_classes="small-board"%}</td>
             </tr>
 
         {% empty %}
             <tr><td colspan="4">You have played no games. <a href="{% url 'sudokugame:play' %}">Play Now</a> </td></tr>
         {% endfor %}
         </table>
+    </main>
 {% endblock %}

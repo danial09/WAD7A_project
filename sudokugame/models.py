@@ -53,7 +53,7 @@ class Game(models.Model):
         ]
 
     def __str__(self):
-        return f"Game: {self.user} played {self.board} @ {self.submissionDate}"
+        return f"Game: {self.user} scored {self.score} on {self.board} @ {self.submissionDate}"
 
 
 # Make email a required field.

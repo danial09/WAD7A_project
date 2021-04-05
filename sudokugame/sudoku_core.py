@@ -4,8 +4,8 @@ This file provides multiple helper variables and methods for working with, gener
 
 import sys
 from random import randrange
+
 from sudoku import Sudoku
-from time import time
 
 # Difficulty value represents the fraction of cells that are empty
 difficulties = {
@@ -22,10 +22,10 @@ def generate(difficulty, seed=None):
     :param seed: The seed to use to generate the board, leave empty for random seed.
     """
     if seed is None:
-      seed = randrange(sys.maxsize)
-  
+        seed = randrange(sys.maxsize)
+
     difficulty_value = difficulties[difficulty]['value']
-    return Sudoku(3, 3, seed=seed).difficulty(difficulty_value) 
+    return Sudoku(3, 3, seed=seed).difficulty(difficulty_value)
 
 
 def solve(board):
@@ -37,7 +37,6 @@ def solve(board):
 
     solution = Sudoku(3, 3, board=board).solve()
     return solution.board
-
 
 
 def flatten(board):

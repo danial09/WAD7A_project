@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from sudokugame import views
 from django.urls import reverse
 
@@ -16,10 +16,7 @@ urlpatterns = [
     path('practice/', views.practice, name='practice'),
     path('dailychallenge/', views.dailychallenge, name='dailychallenge'),
     path('leaderboard/ajax/get/', views.ajax_leaderboard),
-    path('play/ajax/solve/', views.ajax_solve),
-    path('play/ajax/hint/', views.ajax_hint),
-    path('play/ajax/input/', views.ajax_input),
-    path('dailychallenge/ajax/solve/', views.ajax_solve),
-    path('dailychallenge/ajax/hint/', views.ajax_hint),
-    path('dailychallenge/ajax/input/', views.ajax_input),
+    re_path(r'^(play|dailychallenge)/ajax/solve/$', views.ajax_solve),
+    re_path(r'^(play|dailychallenge)/ajax/hint/$', views.ajax_hint),
+    re_path(r'^(play|dailychallenge)/ajax/input/$', views.ajax_input),
 ]

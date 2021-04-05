@@ -104,7 +104,6 @@ def practice(request):
 
 def dailychallenge(request):
     board = create_daily_challenge()
-    print(board.solution)
     start_game(request, board)
     return render(request, 'sudokugame/dailychallenge.html', context={'board': board})
 
@@ -170,14 +169,14 @@ def help_page(request):
     return render(request, "sudokugame/help.html", context={"example_board": board})
 
 
-def ajax_solve(request):
+def ajax_solve(request, _):
     solution = request.session['solution']
     stop_game(request)
 
     return JsonResponse({'solution': solution})
 
 
-def ajax_hint(request):
+def ajax_hint(request, _):
     if request.session['hints'] > 0:
         row = request.GET.get('row')
         col = request.GET.get('col')
@@ -192,7 +191,7 @@ def ajax_hint(request):
     return JsonResponse({'value': value})
 
 
-def ajax_input(request):
+def ajax_input(request, _):
     row = request.GET.get('row')
     col = request.GET.get('col')
     val = request.GET.get('val')

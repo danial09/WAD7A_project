@@ -20,7 +20,12 @@ from sudokugame.sudoku_core import generate, flatten_join, difficulties, get_fla
 
 
 def home(request):
-    return render(request, 'sudokugame/home.html')
+    if request.user.is_authenticated:
+        challenge_done = Game.objects.filter(user=request.user).filter(board__postedDate=timezone.now().date()).exists()
+    else:
+        challenge_done = False
+
+    return render(request, 'sudokugame/home.html', context={'challenge_done': challenge_done})
 
 
 def create_daily_challenge():
@@ -56,7 +61,8 @@ def start_game(request, board):
     request.session['remaining'] = sum([1 if x == '0' else 0 for x in board.grid])
 
 def add_game(request):
-    score = generate_score(request.session['start_time'], request.session['hints'], request.session['lives'])
+    time_taken_mins = int((int(time()) - request.session['start_time']) / 60)
+    score = generate_score(time_taken_mins, request.session['hints'], request.session['lives'])
     if 'board_id' in request.session:
         board = Board.objects.filter(id=request.session['board_id'])[0]
     else:

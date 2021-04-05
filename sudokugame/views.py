@@ -70,6 +70,10 @@ def add_game(request):
         board = Board(grid=request.session['board'], solution=request.session['solution'], difficulty=request.session['difficulty'])
         board.save()
 
+    # Don't add game if the user has already played this board.
+    if Game.objects.filter(board=board).filter(user=request.user).exists():
+        return
+
     game = Game(board=board, user=request.user, score=score, submissionDate=timezone.now())
     game.save()
 

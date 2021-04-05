@@ -12,14 +12,13 @@ class Sudoku {
     }
 
     start() {
+        this.remaining = 81 - $(".fixed-cell").length;
+        Sudoku.setHint(this.hints);
+        Sudoku.setLives(this.lives);
+
         $(".game-cell").on("click", (target) => {
             this.focusCell($(target.target).closest(".game-cell"));
         });
-
-        this.remaining = 81 - $(".fixed-cell").length;
-
-        Sudoku.setHint(this.hints);
-        Sudoku.setLives(this.lives);
 
         $("body").keydown((event) => {
             if (event.key.toLowerCase() === 'n') {
@@ -59,7 +58,7 @@ class Sudoku {
                 })
             }
             this.fillBoard(solution)
-            this.stopTime();
+            this.stopGame();
         });
 
         $("#btn-hint").click(() => {
@@ -97,6 +96,13 @@ class Sudoku {
         });
 
         this.startTime();
+    }
+
+    stopGame() {
+        this.focusedCell = null;
+        this.stopTime();
+        $("#btn-hint").attr("disabled", true);
+        $("#btn-solve").attr("disabled", true);
     }
 
     startTime() {
@@ -205,7 +211,7 @@ class Sudoku {
             this.remaining--;
             $(this.focusedCell).addClass("fixed-cell").removeClass("wrong-cell");
             if (this.remaining === 0) {
-                this.stopTime();
+                this.stopGame();
                 this.solutionBoard !== null ? this.generatePracticeSuccess() : this.generateSuccessPage()
             }
         } else {
@@ -215,7 +221,7 @@ class Sudoku {
             $(this.focusedCell).addClass("wrong-cell");
             Sudoku.setLives(this.lives);
             if (this.lives === 0) {
-                this.stopTime();
+                this.stopGame();
                 this.generateFailurePage()
             }
         }
@@ -290,7 +296,7 @@ class Sudoku {
     }
 
     fillBoard(board) {
-        const sudokuBoard = $("#game-board");
+        const sudokuBoard = $(this.focusedCell).closest(".game-board");
         sudokuBoard.empty();
         board.forEach(row => {
             const tableRow = $("<tr></tr>").addClass("game-row");

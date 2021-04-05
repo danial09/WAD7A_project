@@ -61,8 +61,9 @@ def start_game(request, board):
     request.session['remaining'] = sum([1 if x == '0' else 0 for x in board.grid])
 
 def add_game(request):
-    time_taken_mins = int((int(time()) - request.session['start_time']) / 60)
-    score = generate_score(time_taken_mins, request.session['hints'], request.session['lives'])
+    time_taken = (int(time()) - request.session['start_time'])
+
+    score = generate_score(time_taken, request.session['hints'], request.session['lives'])
     if 'board_id' in request.session:
         board = Board.objects.filter(id=request.session['board_id'])[0]
     else:

@@ -88,7 +88,8 @@ def get_flattened_info(board):
     return flatten_join(board.board), flatten_join(board.solve().board)
 
 
-def generate_score(time_taken_mins, hints, lives):
+def generate_score(time_taken, hints, lives):
+    time_taken_mins = int(time_taken / 60)
     score = 50
 
     score += max(15 - time_taken_mins, 0) * 20

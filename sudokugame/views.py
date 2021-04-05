@@ -73,6 +73,11 @@ def add_game(request):
     game.save()
 
 
+def add_failed_daily_challenge(request):
+    board = Board.objects.filter(id=request.session['board_id'])[0]
+    game = Game(board=board, user=request.user, score=0, submissionDate=timezone.now())
+    game.save()
+
 def stop_game(request):
     if 'board_id' in request.session:
         del request.session['board_id']
@@ -206,6 +211,9 @@ def ajax_input(request):
         result = "incorrect"
         request.session['lives'] -= 1
         if request.session['lives'] == 0:
+            if 'board_id' in request.session:
+                add_failed_daily_challenge(request)
+
             stop_game(request)
 
     return JsonResponse({"result": result})
@@ -226,7 +234,7 @@ def ajax_leaderboard(request):
     if board_type != "DC":
         queryset = queryset.filter(board__difficulty=board_type)
     else:
-        queryset = queryset.filter(board__postedDate=timezone.now().date())
+        queryset = queryset.filter(board__postedDate=timezone.now().date()).filter(score__gt=0)
 
     queryset = queryset.order_by("-score")[:10]
 

@@ -254,10 +254,11 @@ class Sudoku {
             .empty()
             .append($("<h1>Well Done!</h1>"))
             .append($("<h2>You've completed the practice board</h2>"))
-            .append($("<p>Why not try a real game?</p>"))
+            .append($("<p>Why not try your skills in a real game?</p>"))
             .append(
                 $("<div class='d-grid gap-2 col-8 mx-auto'></div>")
-                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">A Real Game</button>"))
+                    .append($("<button class=\"btn btn-primary\" type=\"button\" onclick=\"document.location.reload()\">Practice Again</button>"))
+                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"))
             )
     }
 
@@ -293,7 +294,7 @@ class Sudoku {
         const buttonDiv = $("<div class='d-grid gap-2 col-8 mx-auto'></div>");
 
         if (this.boardType === 'DC') {
-            $(buttonDiv).append($("<button class=\"btn btn-primary\" type=\"button\" onclick='document.location.reload()'>Try Again</button>"))
+            $(buttonDiv).append($("<a class=\"btn btn-primary\" type=\"button\" href='../practice/'>Practice for Tomorrow</a>"))
         } else {
             $(buttonDiv).append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"));
         }

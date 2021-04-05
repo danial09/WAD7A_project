@@ -296,7 +296,7 @@ class Sudoku {
     }
 
     fillBoard(board) {
-        const sudokuBoard = $(this.focusedCell).closest(".game-board");
+        const sudokuBoard = $(".game-board");
         sudokuBoard.empty();
         board.forEach(row => {
             const tableRow = $("<tr></tr>").addClass("game-row");

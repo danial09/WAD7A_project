@@ -100,6 +100,8 @@ class Sudoku {
     }
 
     stopGame() {
+        $(this.focusedCell).removeAttr("id");
+        this.focusCell(null);
         this.focusedCell = null;
         this.stopTime();
         $("#btn-hint").attr("disabled", true);

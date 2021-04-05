@@ -87,19 +87,22 @@
     }
 
     function getLeaderboardData() {
-        $(".leaderboard-btn .btn").addClass("disabled");
+        const boardType = getBoardType();
+        const timeLimit = getTimeLimit();
+        if (boardType === "DC") $(".time-limit-btn .btn").addClass("disabled");
+        else $(".time-limit-btn .btn").removeClass("disabled");
+
         $.ajax({
             url: 'ajax/get/',
             timeout: 5000,
             async: false,
             data: {
-                'timeLimit': getTimeLimit(),
-                'boardType': getBoardType()
+                'timeLimit': timeLimit,
+                'boardType': boardType
             },
             dataType: 'json',
             success: function (data) {
                 replaceLeaderboard(data);
-                $(".leaderboard-btn .btn").removeClass("disabled");
             }
         });
     }

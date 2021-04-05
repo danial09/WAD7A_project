@@ -17,4 +17,5 @@ urlpatterns = [
     path('leaderboard/ajax/get/', views.ajax_leaderboard),
     path('play/ajax/solve/', views.ajax_solve),
     path('play/ajax/hint/', views.ajax_hint),
+    path('play/ajax/input/', views.ajax_input),
 ]

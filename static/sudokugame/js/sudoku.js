@@ -8,15 +8,15 @@ class Sudoku {
         this.solutionBoard = solutionBoard
         this.timeElement = $("#game-time p");
         this.lives = lives;
-        this.livesElement = $("#game-lives p");
         this.hints = hints;
-        this.hintsElement = $("#game-hints p");
     }
 
     start() {
         $(".game-cell").on("click", (target) => {
             this.focusCell($(target.target).closest(".game-cell"));
         });
+
+        this.remaining = 81 - $(".fixed-cell").length;
 
         Sudoku.setHint(this.hints);
         Sudoku.setLives(this.lives);
@@ -90,6 +90,8 @@ class Sudoku {
                 .addClass("fixed-cell")
                 .find(".cell-value").html(value);
 
+            $(this.focusedNotes).empty();
+            this.inputCheck(value);
             this.hints--;
             Sudoku.setHint(this.hints);
         });
@@ -176,12 +178,55 @@ class Sudoku {
         }
     }
 
+    inputCheck(value) {
+        let result = null;
+        const row = $(this.focusedCell).parent().index();
+        const col = $(this.focusedCell).index();
+
+        if (this.solutionBoard !== null) {
+            result = value === this.solutionBoard[row][col] ? "correct" : "incorrect";
+        } else {
+            $.ajax({
+                url: 'ajax/input/',
+                async: false,
+                data: {
+                    'row': row,
+                    'col': col,
+                    'val': value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    result = data.result;
+                }
+            });
+        }
+
+        if (result === "correct") {
+            this.remaining--;
+            $(this.focusedCell).addClass("fixed-cell").removeClass("wrong-cell");
+            if (this.remaining === 0) {
+                this.stopTime();
+                this.solutionBoard !== null ? this.generatePracticeSuccess() : this.generateSuccessPage()
+            }
+        } else {
+            if ($(this.focusedValue).html() !== value)
+                this.lives--;
+
+            $(this.focusedCell).addClass("wrong-cell");
+            Sudoku.setLives(this.lives);
+            if (this.lives === 0) {
+                this.stopTime();
+                this.generateFailurePage()
+            }
+        }
+    }
+
     cellInput(key) {
         const inputMode = document.getElementById("btn-input").checked === true ? "input" : "notes";
 
         if (inputMode === "input") {
             this.focusedNotes.empty();
-            // TODO: Add an AJAX call here to validate user input
+            this.inputCheck(key);
             this.focusedValue.html(key);
             this.highlightRelatedCells($("#focused-cell"));
         } else {
@@ -197,6 +242,52 @@ class Sudoku {
         }
     }
 
+    generatePracticeSuccess() {
+        $("#left-panel-wrapper")
+            .empty()
+            .append($("<h1>Well Done!</h1>"))
+            .append($("<h2>You've completed the practice board</h2>"))
+            .append($("<p>Why not try a real game?</p>"))
+            .append(
+                $("<div class='d-grid gap-2 col-8 mx-auto'></div>")
+                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">A Real Game</button>"))
+            )
+    }
+
+    generateSuccessPage() {
+        const base = 50;
+        const timeBonus = Math.max(15 - Math.floor(this.timeElapsed / 60), 0) * 20;
+
+        const hintBonus = this.hints === 3 ? 100 : 0;
+        const livesBonus = this.lives === 3 ? 100 : 0;
+
+        const score = base + timeBonus + hintBonus + livesBonus;
+
+        $("#left-panel-wrapper")
+            .empty()
+            .append($("<h1>Well Done!</h1>"))
+            .append($("<h2>Your Score: " + score +"</h2>"))
+            .append($("<p>Base: " + base + "</p>"))
+            .append($("<p>Time Bonus: " + timeBonus + "</p>"))
+            .append($("<p>Lives Bonus: " + livesBonus + "</p>"))
+            .append($("<p>Hints Bonus: " + hintBonus + "</p>"))
+            .append(
+                $("<div class='d-grid gap-2 col-8 mx-auto'></div>")
+                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"))
+                    .append($("<a href=\"../leaderboard/\" class=\"btn btn-warning\" type=\"button\">Leaderboard</a>"))
+            )
+    }
+
+    generateFailurePage() {
+        $("#left-panel-wrapper")
+            .empty()
+            .append($("<h1>Better Luck Next Time</h1>"))
+            .append(
+                $("<div class='d-grid gap-2 col-8 mx-auto'></div>")
+                    .append($("<button class=\"btn btn-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#playModal\">New Game</button>"))
+                    .append($("<a href=\"../leaderboard/\" class=\"btn btn-warning\" type=\"button\">Leaderboard</a>"))
+            )
+    }
 
     fillBoard(board) {
         const sudokuBoard = $("#game-board");

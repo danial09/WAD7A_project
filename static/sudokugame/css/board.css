@@ -70,7 +70,7 @@
 }
 
 .wrong-cell {
-    color: red;
+    color: red !important;
 }
 
 /* Based on @T30's answer: https://stackoverflow.com/questions/11997032/how-to-get-box-shadow-on-left-right-sides-only */

@@ -58,6 +58,7 @@ def start_game(request, board):
     request.session['start_time'] = int(time())
     request.session['lives'] = 3
     request.session['hints'] = 3
+    request.session['remaining'] = sum([1 if x == '0' else 0 for x in board.grid])
 
 def add_game(request):
     score = generate_score(request.session['start_time'], request.session['hints'], request.session['lives'])
@@ -67,7 +68,7 @@ def add_game(request):
         board = Board(grid=request.session['board'], solution=request.session['solution'], difficulty=request.session['difficulty'])
         board.save()
 
-    game = Game(board=board, user=request.user, score=score, submissionDate=timezone.now().date())
+    game = Game(board=board, user=request.user, score=score, submissionDate=timezone.now())
     game.save()
 
 
@@ -144,16 +145,7 @@ def profile_page(request):
     return render(request, "sudokugame/profile.html", {'games': queryset})
 
 def leader_board(request):
-
-    querysetE = Game.objects.filter(board__difficulty = "E").order_by("-score")[:10]
-    querysetM = Game.objects.filter(board__difficulty = "M").order_by("-score")[:10]
-    querysetH = Game.objects.filter(board__difficulty = "H").order_by("-score")[:10]
-    querysetDCTemp = Game.objects.filter(board__postedDate__isnull = False)
-    querysetDC = querysetDCTemp.order_by("board__postedDate").order_by("-score")[:10]
-
-    context = {"Easygamelist": querysetE, "Mediumgamelist": querysetM, "Hardgamelist": querysetH, "Dailychallengelist": querysetDC}
-
-    return render(request, "sudokugame/leaderboard.html", context)
+    return render(request, "sudokugame/leaderboard.html")
 
 
 def help_page(request):
@@ -185,6 +177,30 @@ def ajax_hint(request):
         value = 0
     print("Test" + value)
     return JsonResponse({'value': value})
+
+
+def ajax_input(request):
+    row = request.GET.get('row')
+    col = request.GET.get('col')
+    val = request.GET.get('val')
+
+    solution = request.session['solution']
+    solution_val = solution[9*int(row) + int(col)]
+
+    if val == solution_val:
+        result = "correct"
+        request.session["remaining"] -= 1
+        if request.session["remaining"] == 0:
+            if request.user.is_authenticated:
+                add_game(request)
+            stop_game(request)
+    else:
+        result = "incorrect"
+        request.session['lives'] -= 1
+        if request.session['lives'] == 0:
+            stop_game(request)
+
+    return JsonResponse({"result": result})
 
 def ajax_leaderboard(request):
     time = timezone.now()

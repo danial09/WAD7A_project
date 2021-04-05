@@ -102,7 +102,11 @@ def practice(request):
     return render(request, 'sudokugame/practice.html', context={'board': board})
 
 
+@login_required
 def dailychallenge(request):
+    if Game.objects.filter(user=request.user).filter(board__postedDate=timezone.now().date()).exists():
+        return redirect(reverse('sudokugame:home'))
+
     board = create_daily_challenge()
     start_game(request, board)
     return render(request, 'sudokugame/dailychallenge.html', context={'board': board})

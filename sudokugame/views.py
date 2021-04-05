@@ -47,9 +47,9 @@ def start_game(request, board):
         request.session['board_id'] = board.id
     else:
         request.session['board'] = board.grid
-        request.session['solution'] = board.solution
-        request.session['difficulty'] = board.difficulty
 
+    request.session['solution'] = board.solution
+    request.session['difficulty'] = board.difficulty
     request.session['start_time'] = int(time())
     request.session['lives'] = 3
     request.session['hints'] = 3

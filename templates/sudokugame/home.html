@@ -4,19 +4,18 @@
     Home
 {% endblock %}
 
-
 {% block left_panel_block %}
 <div class="d-grid gap-5 mx-auto">
     <div class="d-grid gap-3 col-8 mx-auto">
         <button class="btn btn-primary p-3" type="button" data-bs-toggle="modal" data-bs-target="#playModal">New Game</button>
         {% if user.is_authenticated %}
             {% if challenge_done %}
-                <a href="{% url 'sudokugame:dailychallenge' %}" class="btn btn-success p-3 disabled" type="button">Daily Challenge</a>
+                <a href="{% url 'sudokugame:dailychallenge' %}" class="btn btn-primary btn-success p-3 disabled" type="button">Daily Challenge</a>
             {% else %}
                 <a href="{% url 'sudokugame:dailychallenge' %}" class="btn btn-success p-3" type="button">Daily Challenge</a>
             {% endif %}
         {% endif %}
-        <a href="{% url 'sudokugame:leaderboard' %}" class="btn btn-warning p-3" type="button">Leaderboards</a>
+        <a href="{% url 'sudokugame:leaderboard' %}" class="btn btn-primary btn-warning p-3" type="button">Leaderboards</a>
     </div>
 
     <div class="d-grid gap-3 d-md-flex justify-content-center">

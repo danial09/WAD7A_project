@@ -29,10 +29,10 @@ STATIC_DIR= os.path.join(BASE_DIR, 'static')
 SECRET_KEY = '=8*d*b_$#0^*wy@3(ss^*dyzfxvt_xss5zo0azxue9(u7)k!0y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-# might have to remove 127.0.0.1 after deployment
-ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com', '127.0.0.1']
+
+ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com']
 
 
 # Application definition

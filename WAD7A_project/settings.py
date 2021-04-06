@@ -15,6 +15,8 @@ import os
 
 # # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
+from django.core.management.utils import get_random_secret_key
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
@@ -25,14 +27,26 @@ STATIC_DIR= os.path.join(BASE_DIR, 'static')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
+
+# Secret Key generation
+try:
+    with open('secret.key', 'r') as f:
+        key = f.read().strip()
+        print(key)
+except FileNotFoundError:
+    key = get_random_secret_key()
+    with open('secret.key', 'w') as f:
+        f.write(key)
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=8*d*b_$#0^*wy@3(ss^*dyzfxvt_xss5zo0azxue9(u7)k!0y'
+SECRET_KEY = key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com']
+ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition

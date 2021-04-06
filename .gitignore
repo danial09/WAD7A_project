@@ -153,3 +153,6 @@ dmypy.json
 
 # User specific VS Code settings
 .vscode/settings.json
+
+# Hide secret key
+secret.key

@@ -46,7 +46,7 @@ SECRET_KEY = key
 DEBUG = False
 
 
-ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com']
+ALLOWED_HOSTS = ['wad7aproject.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition

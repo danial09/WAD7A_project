@@ -67,19 +67,22 @@ def add_game(request):
 
     score = generate_score(time_taken, request.session['hints'], request.session['lives'])
     if 'board_id' in request.session:
+        # A daily challenge game with this user should already exist. Let's just update that.
         board = Board.objects.filter(id=request.session['board_id'])[0]
+        game = Game.objects.get(board=board, user=request.user)
+        game.score = score
+        game.save()
+
     else:
         board = Board(grid=request.session['board'], solution=request.session['solution'], difficulty=request.session['difficulty'])
         if bool(check := Board.objects.filter(grid=board.grid)):
             board = check[0]
         board.save()
+        if Game.objects.filter(board=board).filter(user=request.user).exists():
+            return
 
-    # Don't add game if the user has already played this board.
-    if Game.objects.filter(board=board).filter(user=request.user).exists():
-        return
-
-    game = Game(board=board, user=request.user, score=score, submissionDate=timezone.now())
-    game.save()
+        game = Game(board=board, user=request.user, score=score, submissionDate=timezone.now())
+        game.save()
 
 
 def add_failed_daily_challenge(request):
@@ -117,6 +120,10 @@ def dailychallenge(request):
 
     board = create_daily_challenge()
     start_game(request, board)
+
+    # Start off with the user having failed the daily challenge, this will prevent them from having multiple attempts.
+    add_failed_daily_challenge(request)
+
     return render(request, 'sudokugame/dailychallenge.html', context={'board': board})
 
 # Create a registration view
@@ -224,8 +231,6 @@ def ajax_input(request, _):
         result = "incorrect"
         request.session['lives'] -= 1
         if request.session['lives'] == 0:
-            if 'board_id' in request.session and request.user.is_authenticated:
-                add_failed_daily_challenge(request)
             return_json['solution'] = solution
             stop_game(request)
 

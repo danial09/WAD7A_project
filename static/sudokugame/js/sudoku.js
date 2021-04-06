@@ -14,8 +14,6 @@ class Sudoku {
 
     start() {
         this.remaining = 81 - $(".fixed-cell").length;
-        console.log($(".fixed-cell").length)
-        console.log(this.remaining);
         Sudoku.setHint(this.hints);
         Sudoku.setLives(this.lives);
 

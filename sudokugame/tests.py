@@ -216,7 +216,7 @@ class BoardModelTests(TestCase):
                         f"{FAILURE_HEADER}Easy solution isn't the right size{FAILURE_FOOTER}")
         self.assertEqual(boardE.difficulty, 'E',
                          f"{FAILURE_HEADER}Easy board doesn't have easy difficulty{FAILURE_FOOTER}")
-        self.assertEqual(len(remove_zeros_from_board(boardE.grid)), 38,
+        self.assertEqual(len(remove_zeros_from_board(boardE.grid)), 47,
                          f"{FAILURE_HEADER}Easy board doesn't have the right number of filled cells{FAILURE_FOOTER}")
 
     def test_board_model_medium(self):
@@ -229,7 +229,7 @@ class BoardModelTests(TestCase):
                         f"{FAILURE_HEADER}Medium solution isn't the right size{FAILURE_FOOTER}")
         self.assertEqual(boardM.difficulty, 'M',
                          f"{FAILURE_HEADER}Medium board doesn't have medium difficulty{FAILURE_FOOTER}")
-        self.assertEqual(len(remove_zeros_from_board(boardM.grid)), 27,
+        self.assertEqual(len(remove_zeros_from_board(boardM.grid)), 37,
                          f"{FAILURE_HEADER}Medium board doesn't have the right number of filled cells{FAILURE_FOOTER}")
 
 
@@ -244,7 +244,7 @@ class BoardModelTests(TestCase):
                         f"{FAILURE_HEADER}Hard solution isn't the right size{FAILURE_FOOTER}")
         self.assertEqual(boardH.difficulty, 'H',
                          f"{FAILURE_HEADER}Hard board doesn't have hard difficulty{FAILURE_FOOTER}")
-        self.assertEqual(len(remove_zeros_from_board(boardH.grid)), 17,
+        self.assertEqual(len(remove_zeros_from_board(boardH.grid)), 27,
                          f"{FAILURE_HEADER}Hard board doesn't have the right number of filled cells{FAILURE_FOOTER}")
 
 

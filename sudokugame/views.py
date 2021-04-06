@@ -221,7 +221,7 @@ def ajax_input(request, _):
         result = "incorrect"
         request.session['lives'] -= 1
         if request.session['lives'] == 0:
-            if 'board_id' in request.session:
+            if 'board_id' in request.session and request.user.is_authenticated:
                 add_failed_daily_challenge(request)
             stop_game(request)
             return_json['solution'] = solution

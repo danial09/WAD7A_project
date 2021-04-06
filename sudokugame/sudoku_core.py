@@ -9,9 +9,9 @@ from sudoku import Sudoku
 
 # Difficulty value represents the fraction of cells that are empty
 difficulties = {
-    'E': {'name': 'Easy', 'value': 1 - 37 / 81},
-    'M': {'name': 'Medium', 'value': 1 - 27 / 81},
-    'H': {'name': 'Hard', 'value': 1 - 17 / 81},
+    'E': {'name': 'Easy', 'value': 1 - 47 / 81},
+    'M': {'name': 'Medium', 'value': 1 - 37 / 81},
+    'H': {'name': 'Hard', 'value': 1 - 27 / 81},
 }
 
 

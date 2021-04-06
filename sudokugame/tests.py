@@ -66,7 +66,6 @@ def get_template(path):
     file.close()
     return template_str
 
-#Please check if this is right UK
 def remove_zeros_from_board(grid_str):
 
     stripped_grid_str = ""

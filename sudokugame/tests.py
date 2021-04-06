@@ -1,3 +1,4 @@
+from django.db.models.functions import math
 from django.test import TestCase
 import os
 import re
@@ -259,16 +260,6 @@ class BoardModelTests(TestCase):
         self.assertEqual(boardDC.postedDate, timezone.now().date(), f"{FAILURE_HEADER}The DC doesnt have today's date{FAILURE_FOOTER}")
 
 
-
-
-
-
-
-
-
-
-
-
 class GenerateScoreTests(TestCase):
 
     def test_generate_score(self):
@@ -296,3 +287,27 @@ class GenerateScoreTests(TestCase):
         score = generate_score(time_taken, hints, lives)
 
         self.assertTrue(score <= 550 and score >= 50, f"{FAILURE_HEADER}Generate score isn't generating in range{FAILURE_FOOTER}")
+
+class SessionConfigurationTests(TestCase):
+
+    def test_middleware(self):
+        self.assertTrue('django.contrib.sessions.middleware.SessionMiddleware' in settings.MIDDLEWARE)
+
+    def test_session_app(self):
+        self.assertTrue('django.contrib.sessions' in settings.INSTALLED_APPS)
+
+
+class SessionContentTests(TestCase):
+
+    def test_session_content_play_page(self):
+
+        response = self.client.get(reverse('sudokugame:play'))
+        session = self.client.session
+
+        self.assertTrue(session['solution'], f"{FAILURE_HEADER}The session id doesnot contain solution to the board{FAILURE_FOOTER}")
+        self.assertEqual(session['difficulty'], 'M', f"{FAILURE_HEADER}The generated board doesnot have medium difficulty{FAILURE_FOOTER}")
+        self.assertEqual(session['hints'], 3, f"{FAILURE_HEADER}The user do not get 3 hints in the beginning as expected.{FAILURE_FOOTER}")
+        self.assertEqual(session['lives'], 3,
+                         f"{FAILURE_HEADER}The user do not get 3 lives in the beginning as expected.{FAILURE_FOOTER}")
+
+

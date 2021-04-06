@@ -238,8 +238,8 @@ class Sudoku {
 
         if (inputMode === "input") {
             this.focusedNotes.empty();
-            this.inputCheck(key);
             this.focusedValue.html(key);
+            this.inputCheck(key);
             this.highlightRelatedCells($("#focused-cell"));
         } else {
             this.focusedValue.empty();

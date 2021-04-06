@@ -52,6 +52,8 @@ def start_game(request, board):
         request.session['board_id'] = board.id
     else:
         request.session['board'] = board.grid
+        if 'board_id' in request.session:
+            del request.session['board_id']
 
     request.session['solution'] = board.solution
     request.session['difficulty'] = board.difficulty
@@ -68,6 +70,8 @@ def add_game(request):
         board = Board.objects.filter(id=request.session['board_id'])[0]
     else:
         board = Board(grid=request.session['board'], solution=request.session['solution'], difficulty=request.session['difficulty'])
+        if bool(check := Board.objects.filter(grid=board.grid)):
+            board = check[0]
         board.save()
 
     # Don't add game if the user has already played this board.
@@ -99,7 +103,7 @@ def stop_game(request):
 def play(request):
     board = create_board(request.GET.get("difficulty"))
     start_game(request, board)
-
+    print(request.session['solution'])
     return render(request, 'sudokugame/play.html', context={'board': board})
 
 def practice(request):
@@ -205,7 +209,7 @@ def ajax_input(request, _):
     col = request.GET.get('col')
     val = request.GET.get('val')
 
-    return_json = {}
+    return_json = {'solution': ''}
 
     solution = request.session['solution']
     solution_val = solution[9*int(row) + int(col)]
@@ -223,8 +227,8 @@ def ajax_input(request, _):
         if request.session['lives'] == 0:
             if 'board_id' in request.session and request.user.is_authenticated:
                 add_failed_daily_challenge(request)
-            stop_game(request)
             return_json['solution'] = solution
+            stop_game(request)
 
     return_json['result'] = result
     return JsonResponse(return_json)

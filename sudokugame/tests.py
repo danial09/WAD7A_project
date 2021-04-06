@@ -1,7 +1,11 @@
 from django.test import TestCase
 import os
 import re
+import random
 from sudokugame import forms
+from sudokugame import views
+from sudokugame.sudoku_core import generate_score
+from sudokugame.models import Game 
 from django.urls import reverse
 from django.conf import settings
 from django.forms import fields as django_fields
@@ -57,6 +61,16 @@ def get_template(path):
         template_str = f'{template_str}{line}'
     file.close()
     return template_str
+
+#Please check if this is right UK
+def remove_zeros_from_board(grid_str):
+
+    stripped_grid_str = ""
+    for character in grid_str:
+        if character != "0":
+            stripped_grid_str = stripped_grid_str + character
+    
+    return stripped_grid_str
 
 
 class RegistrationFormTests(TestCase):
@@ -183,4 +197,80 @@ class LogoutTests(TestCase):
         response = self.client.get(reverse('sudokugame:logout'))
         self.assertEqual(response.status_code, 302, f"{FAILURE_HEADER}Redirection failed after logging out a user{FAILURE_FOOTER}")
         self.assertEqual(response.url, reverse('sudokugame:home'), f"{FAILURE_HEADER}Redirected to wrong page{FAILURE_FOOTER}")
-        self.assertTrue('_auth_user_id' not in self.client.session, f"{FAILURE_HEADER}Logout failed{FAILURE_FOOTER}")
+        self.assertTrue('_auth_user_id' not in self.client.session, f"{FAILURE_HEADER}Logout failed{FAILURE_FOOTER}") 
+
+#untested, don't know if these work, please check before merging UK
+
+class BoardModelTests(TestCase):
+
+    def set_up(self):
+
+        boardE = create_board("E")
+        boardE.save()
+
+        boardM = create_board("M")
+        boardM.save()
+
+        boardH = create_board("H")
+        boardH.save()
+
+        boardDC = create_daily_challenge()
+
+    def test_grid_length(self):
+
+        self.assertTrue(boardE.grid.length()==81, f"{FAILURE_HEADER}Easy grid isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardM.grid.length()==81, f"{FAILURE_HEADER}Medium grid isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardH.grid.length()==81, f"{FAILURE_HEADER}Hard grid isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardDC.grid.length()==81, f"{FAILURE_HEADER}Daily Challenge grid isn't the right size{FAILURE_FOOTER}")
+
+    def test_solution_length(self):
+
+        self.assertTrue(boardE.solution.length()==81, f"{FAILURE_HEADER}Easy solution isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardM.solution.length()==81, f"{FAILURE_HEADER}Medium solution isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardH.solution.length()==81, f"{FAILURE_HEADER}Hard solution isn't the right size{FAILURE_FOOTER}")
+        self.assertTrue(boardDC.solution.length()==81, f"{FAILURE_HEADER}Daily Challenge solution isn't the right size{FAILURE_FOOTER}")
+
+    def test_daily_challenge_postedDate(self):
+
+        self.assertEqual(boardDc.postedDate, timezone.now().date(), f"{FAILURE_HEADER}The DC doesnt have today's date{FAILURE_FOOTER}")
+
+    def test_normalboard_difficulty(self):
+
+        self.assertEqual(boardE.difficulty, 'E', f"{FAILURE_HEADER}Easy board doesn't have easy difficulty{FAILURE_FOOTER}")
+        self.assertEqual(boardM.difficulty, 'M', f"{FAILURE_HEADER}Medium board doesn't have medium difficulty{FAILURE_FOOTER}")
+        self.assertEqual(boardH.difficulty, 'H', f"{FAILURE_HEADER}Hard board doesn't have hard difficulty{FAILURE_FOOTER}")
+
+    def test_difficulty_fill(self):
+
+        self.assertEqual(remove_zeros_from_board(boardE.grid).length(), 37, f"{FAILURE_HEADER}Easy board doesn't have the right number of filled cells{FAILURE_FOOTER}")
+        self.assertEqual(remove_zeros_from_board(boardM.grid).length(), 27, f"{FAILURE_HEADER}Easy board doesn't have the right number of filled cells{FAILURE_FOOTER}")
+        self.assertEqual(remove_zeros_from_board(boardH.grid).length(), 17, f"{FAILURE_HEADER}Easy board doesn't have the right number of filled cells{FAILURE_FOOTER}")
+
+
+class GenerateScoreTests(TestCase):
+
+    def test_generate_score:
+
+        time_taken = random.randint(0, 15)
+        hints = random.randint(0, 3)
+        lives = random.randint(0, 3)
+
+        score = 50 + (max(15-time_taken, 0))*20
+
+        if hints == 3:
+            score += 100
+
+        if lives == 3:
+            score += 100
+
+
+        self.assertEqual(generate_score(time_taken*60, hints, lives), score, f"{FAILURE_HEADER}Generate score isn't working right{FAILURE_FOOTER}")
+
+    def test_generate_score_range(self):
+
+        time_taken = random.randint(0, 15)*60
+        hints = random.randint(0, 3)
+        lives = random.randint(0, 3)
+        score = generate_score(time_taken, hints, lives)
+
+        self.assertTrue(score <= 550 and score >= 50, f"{FAILURE_HEADER}Generate score isn't generating in range{FAILURE_FOOTER}")

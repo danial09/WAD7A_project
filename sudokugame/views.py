@@ -103,7 +103,6 @@ def stop_game(request):
 def play(request):
     board = create_board(request.GET.get("difficulty"))
     start_game(request, board)
-    print(request.session['solution'])
     return render(request, 'sudokugame/play.html', context={'board': board})
 
 def practice(request):

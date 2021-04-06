@@ -14,6 +14,8 @@ class Sudoku {
 
     start() {
         this.remaining = 81 - $(".fixed-cell").length;
+        console.log($(".fixed-cell").length)
+        console.log(this.remaining);
         Sudoku.setHint(this.hints);
         Sudoku.setLives(this.lives);
 
@@ -220,8 +222,7 @@ class Sudoku {
                 this.solutionBoard !== null ? this.generatePracticeSuccess() : this.generateSuccessPage()
             }
         } else {
-            if ($(this.focusedValue).html() !== value)
-                this.lives--;
+            this.lives--;
 
             $(this.focusedCell).addClass("wrong-cell");
             Sudoku.setLives(this.lives);

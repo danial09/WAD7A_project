@@ -32,7 +32,6 @@ STATIC_DIR= os.path.join(BASE_DIR, 'static')
 try:
     with open('secret.key', 'r') as f:
         key = f.read().strip()
-        print(key)
 except FileNotFoundError:
     key = get_random_secret_key()
     with open('secret.key', 'w') as f:
